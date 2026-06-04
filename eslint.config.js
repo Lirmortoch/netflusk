@@ -18,4 +18,10 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    rules: {
+      semi: always,
+      omitLastInOneLineClassBody: true
+    }
+  }
 ])
