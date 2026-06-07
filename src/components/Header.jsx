@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 import HoverDropdown from "./HoverDropdown"
 
 export default function Header({}) {
@@ -8,8 +10,23 @@ export default function Header({}) {
       </div>
 
       <nav className="header__nav header-nav">
-        <HoverDropdown>
-          
+        <HoverDropdown 
+          dropdownBtn={<button>People</button>}
+          dropdownContentStyles={''}
+          >
+            <div>
+              <Link to={``}>Popular</Link>
+            </div>
+        </HoverDropdown>
+        
+        <HoverDropdown 
+          dropdownBtn={<button>Awards</button>}
+          dropdownContentStyles={''}
+          >
+            <div>
+              <Link to={``}>Popular</Link>
+              <Link to={``}>Upcoming</Link>
+            </div>
         </HoverDropdown>
       </nav>
     </header>

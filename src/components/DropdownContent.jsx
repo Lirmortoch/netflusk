@@ -1,5 +1,5 @@
-export default function DropdownContent({ children, styleClass, open }) {
-  const dropDownClass = `${styleClass} ${open && 'open'}`;
+export default function DropdownContent({ children, dropdownContentStyles, open }) {
+  const dropDownClass = `${dropdownContentStyles} ${open && 'open'}`;
 
   return (
     <div className={dropDownClass}>
