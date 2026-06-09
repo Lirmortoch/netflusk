@@ -5,29 +5,25 @@ import DropdownContent from "./DropdownContent";
 export default function Dropdown({children, dropdownContentStyles = '', dropdownStyles = '', dropdownBtn, dropdownType}) {
   const [show, setShow] = useState(false);
 
-  function handleShowDropdown() {
-    setShow(true);
+  function handleToggleDropDown() {
+    setShow(prevShow => !prevShow);
   }
-  function handleHideDropdown() {
-    setShow(false);
-  }
-
 
   let dropdownEvents, isTouchDevice;
   if (isTouchDevice) {
     dropdownEvents = { 
-      onTouchEnd: handleShowDropdown, 
+      onTouchEnd: handleToggleDropDown, 
     }
   }
   else if (dropdownType === 'click') {
     dropdownEvents = {
-      onClick: handleShowDropdown,
+      onClick: handleToggleDropDown,
     }
   }
   else if (dropdownType === 'hover') {
     dropdownEvents = { 
-      onMouseEnter: handleShowDropdown, 
-      onMouseLeave: handleHideDropdown 
+      onMouseEnter: handleToggleDropDown, 
+      onMouseLeave: handleToggleDropDown 
     } 
   }
 
@@ -36,7 +32,7 @@ export default function Dropdown({children, dropdownContentStyles = '', dropdown
       {dropdownBtn}
 
       { show && ( 
-        <DropdownContent styleClass={dropdownContentStyles} open={show} >
+        <DropdownContent dropdownContentStyles={dropdownContentStyles} open={show} >
           {children}
         </DropdownContent> 
       )}

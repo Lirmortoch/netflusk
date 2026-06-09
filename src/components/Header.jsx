@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-import Dropdown from "./Dropdown"
+import Dropdown from "./Dropdown/Dropdown.jsx"
 
 export default function Header({}) {
   return (
@@ -12,24 +12,28 @@ export default function Header({}) {
       <nav className="header__nav header-nav">
         <Dropdown 
           dropdownBtn={<button>People</button>}
-          dropdownContentStyles={''}
-          dropdownType={'hover'}
+          dropdownContentStyles=""
+          dropdownStyles=""
+          dropdownType='hover'
           >
-            <div>
+            <>
               <Link to={``}>Popular</Link>
-            </div>
+            </>
         </Dropdown>
         
         <Dropdown 
           dropdownBtn={<button>Awards</button>}
-          dropdownContentStyles={''}
-          dropdownType={'hover'}
+          dropdownContentStyles=""
+          dropdownStyles=""
+          dropdownType='hover'
           >
-            <div>
+            <>
               <Link to={``}>Popular</Link>
               <Link to={``}>Upcoming</Link>
-            </div>
+            </>
         </Dropdown>
+
+        <Link to={``}>Search</Link>
       </nav>
     </header>
   )
