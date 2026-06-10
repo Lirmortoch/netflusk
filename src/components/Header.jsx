@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
-import Dropdown from "./Dropdown/Dropdown.jsx"
+import Dropdown from "./Dropdown/Dropdown.jsx";
 
 export default function Header({}) {
   return (

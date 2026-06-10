@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+
+import useOnClickOutside from '../../hooks/useOnClickOutside';
+import useDetectDevice from '../../hooks/useDetectDevice';
 
 import DropdownContent from "./DropdownContent";
 
 export default function Dropdown({children, dropdownContentStyles = '', dropdownStyles = '', dropdownBtn, dropdownType}) {
   const [show, setShow] = useState(false);
 
+  const dropdownRef = useRef(null);
+
+  useOnClickOutside(dropdownRef, () => setShow(false));
+  const device = useDetectDevice();
+
   function handleToggleDropDown() {
     setShow(prevShow => !prevShow);
   }
 
-  let dropdownEvents, isTouchDevice;
-  if (isTouchDevice) {
+  let dropdownEvents;
+
+  if (device === 'tablet' || device === 'mobile') {
     dropdownEvents = { 
       onTouchEnd: handleToggleDropDown, 
     }
@@ -28,7 +37,7 @@ export default function Dropdown({children, dropdownContentStyles = '', dropdown
   }
 
   return (
-    <div {...dropdownEvents} className={dropdownStyles} >
+    <div {...dropdownEvents} className={dropdownStyles} ref={dropdownRef} >
       {dropdownBtn}
 
       { show && ( 
