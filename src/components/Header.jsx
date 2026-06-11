@@ -1,4 +1,7 @@
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+
+import { setTheme } from "../store/appReducer.js";
 
 import Dropdown from "./Dropdown/Dropdown.jsx";
 
@@ -40,45 +43,55 @@ function NavBar() {
 }
 
 function ThemeSwitcher() {
-  const themeButton = (<></>);
-  const themeList = (<></>)
+  const dispatch = useDispatch();
+
+  const themeButton = (
+    <button>
+      <div>
+        
+      </div>
+    </button>
+  );
+  const themeList = (
+    <ul>
+      <li>
+        <span>
+          <button>
+            <div></div>
+            <p>Light</p>
+          </button>
+        </span>
+        <span></span>
+      </li>
+      <li>
+        <span>
+          <button>
+            <div></div>
+            <p>Dark</p>
+          </button>
+        </span>
+        <span></span>
+      </li>
+      <li>
+        <span>
+          <button>
+            <div></div>
+            <p>System</p>
+          </button>
+        </span>
+        <span></span>
+      </li>
+    </ul>
+  );
   
   return (
     <Dropdown 
-      dropdownBtn={<button>Themes</button>}
+      dropdownBtn={themeButton}
       dropdownContentStyles=""
       dropdownStyles=""
       dropdownType='click'
       >
-        <ul>
-          <li>
-            <span>
-              <div>
-                <div></div>
-                <p></p>
-              </div>
-            </span>
-            <span></span>
-          </li>
-          <li>
-            <span>
-              <div>
-                <div></div>
-                <p></p>
-              </div>
-            </span>
-            <span></span>
-          </li>
-          <li>
-            <span>
-              <div>
-                <div></div>
-                <p></p>
-              </div>
-            </span>
-            <span></span>
-          </li>
-        </ul>
+        {themeList}
     </Dropdown>
   );
 }
