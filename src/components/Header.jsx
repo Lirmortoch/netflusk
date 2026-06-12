@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 
 import { setTheme } from "../store/appReducer.js";
 
-import Dropdown from "./Dropdown/Dropdown.jsx";
+import Dropdown from "./dropdown/Dropdown.jsx";
+import ThemeSwitcher from './ThemeSwitcher.jsx';
 
+// Main navigation bar
 function NavBar() {
   return (
     <nav className="header__nav header-nav">
@@ -42,59 +44,7 @@ function NavBar() {
   );
 }
 
-function ThemeSwitcher() {
-  const dispatch = useDispatch();
-
-  const themeButton = (
-    <button>
-      <div>
-        
-      </div>
-    </button>
-  );
-  const themeList = (
-    <ul>
-      <li>
-        <span>
-          <button>
-            <div></div>
-            <p>Light</p>
-          </button>
-        </span>
-        <span></span>
-      </li>
-      <li>
-        <span>
-          <button>
-            <div></div>
-            <p>Dark</p>
-          </button>
-        </span>
-        <span></span>
-      </li>
-      <li>
-        <span>
-          <button>
-            <div></div>
-            <p>System</p>
-          </button>
-        </span>
-        <span></span>
-      </li>
-    </ul>
-  );
-  
-  return (
-    <Dropdown 
-      dropdownBtn={themeButton}
-      dropdownContentStyles=""
-      dropdownStyles=""
-      dropdownType='click'
-      >
-        {themeList}
-    </Dropdown>
-  );
-}
+// Main toolbar
 function Toolbar() {
   return (
     <ul className="header__toolbar header-toolbar">

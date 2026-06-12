@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-import useDropdown from '../../hooks/useDropdown';
+import useDropdown from './useDropdown';
 
 import DropdownContent from "./DropdownContent";
 
