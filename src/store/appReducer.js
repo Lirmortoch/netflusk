@@ -7,10 +7,20 @@ const appSlicer = createSlice({
   },
   reducers: {
     setTheme(state, action) {
-      return { ...state, theme: action.payload.theme }
+      return { ...state, theme: action.payload }
     }
   }
 });
 
-export const { setTheme } = appSlicer.actions;
+const { setTheme } = appSlicer.actions;
+
+const handleSetTheme = (theme) => {
+  return (dispatch) => {
+    localStorage.setItem('app-theme', theme);
+    dispatch(setTheme(theme));
+  }
+}
+
+export { handleSetTheme }
+
 export default appSlicer.reducer;

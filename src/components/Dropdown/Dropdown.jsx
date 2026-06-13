@@ -4,14 +4,14 @@ import useDropdown from './useDropdown';
 
 import DropdownContent from "./DropdownContent";
 
-export default function Dropdown({children, dropdownContentStyles = '', dropdownStyles = '', dropdownBtn, dropdownType}) {
+export default function Dropdown({children, dropdownStyles = '', dropdownBtn, dropdownType, dropdownContentStyles = ''}) {
   const { show, dropdownRef, handleToggleDropDown, dropdownEvents, } = useDropdown(dropdownType);
 
   return (
-    <div {...dropdownEvents} className={dropdownStyles} ref={dropdownRef} >
+    <div {...dropdownEvents} className={`${dropdownStyles} ${dropdownContentStyles}${show ? ' open' : ''}`} ref={dropdownRef} >
       {dropdownBtn}
 
-      <DropdownContent dropdownContentStyles={dropdownContentStyles} open={show} >
+      <DropdownContent open={show} >
         {children}
       </DropdownContent> 
     </div>

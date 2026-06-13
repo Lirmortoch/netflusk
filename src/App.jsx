@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 
-import './assets/reset.css'
-import './App.css'
+import './assets/reset.css';
+import './App.css';
 
-import Header from './components/Header'
+import Header from './components/Header';
+import { useAppTheme } from './hooks/useAppTheme';
 
 function App() {
-  
+  useAppTheme();
 
   return (
     <>
