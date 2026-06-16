@@ -52,7 +52,7 @@ function NavBar() {
 function Toolbar() {
   return (
     <ul className="header__toolbar header-toolbar">
-      <li>
+      <li className="heder-toolbar__item">
         <ThemeSwitcher />
       </li>
     </ul>
@@ -63,7 +63,7 @@ export default function Header({}) {
   return (
     <header className="header">
       <div className="header__logo logo">
-        Netflusk
+        <h1>Netflusk</h1>
       </div>
 
       <NavBar />

@@ -59,12 +59,12 @@ export default function ThemeSwitcher() {
   const themesList = Object.keys(themeIcons);
 
   const themeList = (
-    <ul>
+    <ul className="theme-switcher__list themes-list">
       {themesList.map((item, i) => (
-        <li key={i + item[0]}>
-          <button onClick={() => dispatch(handleSetTheme(item))}>
-            <div>{themeIcons[item]}</div>
-            <p>{wordToRegularCase(item)}</p>
+        <li key={i + item[0]} className={`themes-list__item${item === theme ? ' current' : ''}`}>
+          <button onClick={() => dispatch(handleSetTheme(item))} className="theme-item">
+            <div className="theme-item__icon">{themeIcons[item]}</div>
+            <p className="theme-item__text">{wordToRegularCase(item)}</p>
           </button>
         </li>
       ))}
