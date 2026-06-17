@@ -1,42 +1,47 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-
 import { handleSetTheme } from '../store/appReducer';
-
-const handleSystemThemeChange = e => {
-  const hasLocalTheme = localStorage.getItem('app-theme') !== null;
-
-  if (hasLocalTheme) {
-    const newSystemTheme = e.matches ? 'light' : 'dark';
-    dispatch(handleSetTheme(newSystemTheme));
-  }
-}
 
 export const useAppTheme = () => {
   const dispatch = useDispatch();
-  const theme = useSelector(({ appSettings }) => appSettings.theme);
+  const themePreference = useSelector(({ appSettings }) => appSettings.theme);
 
   useEffect(() => {
     const localTheme = localStorage.getItem('app-theme');
-    const mediaQueryObj = window.matchMedia('(prefers-color-scheme: light)');
-    const browserPreference = mediaQueryObj.matches ? 'light' : 'dark';
-    const initialTheme = localTheme !== null ? localTheme : browserPreference;
-
-    dispatch(handleSetTheme(initialTheme));
+    dispatch(handleSetTheme(localTheme || 'system'));
   }, [dispatch]);
+
   useEffect(() => {
-    if (!theme) return;
+    if (!themePreference) return;
 
-    document.body.style.colorScheme = theme;
+    const mediaQueryObj = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const mediaQueryObj = window.matchMedia('(prefers-color-scheme: light)');
+    const applyResolvedTheme = () => {
+      let resolvedTheme;
+
+      if (themePreference === 'system') {
+        resolvedTheme = mediaQueryObj.matches ? 'dark' : 'light';
+      } else {
+        resolvedTheme = themePreference;
+      }
+
+      document.body.style.colorScheme = resolvedTheme;
+    };
+
+    applyResolvedTheme();
+
+    const handleSystemThemeChange = () => {
+      if (themePreference === 'system') {
+        applyResolvedTheme();
+      }
+    };
 
     mediaQueryObj.addEventListener('change', handleSystemThemeChange);
 
     return () => {
       mediaQueryObj.removeEventListener('change', handleSystemThemeChange);
     }
-  }, [theme, dispatch]);
+  }, [themePreference]);
 
-  return theme;
+  return themePreference;
 }

@@ -1,4 +1,4 @@
-# Netflusk
+# Netflux
 Netflix clone built with React (Redux, Router) and The Movie DB API.
 
 ## Stack

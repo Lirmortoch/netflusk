@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-import Dropdown from "./dropdown/Dropdown.jsx";
-import ThemeSwitcher from './ThemeSwitcher.jsx';
+import Dropdown from "./ui/dropdown/Dropdown.jsx";
+import ThemeSwitcher from './themeSwitcher/ThemeSwitcher.jsx';
 
 // Main navigation bar
 function LinksButton({ text }) {
@@ -52,8 +52,11 @@ function NavBar() {
 function Toolbar() {
   return (
     <ul className="header__toolbar header-toolbar">
-      <li className="heder-toolbar__item">
+      <li className="header-toolbar__item toolbar-button">
         <ThemeSwitcher />
+      </li>
+      <li className="header-toolbar__item toolbar-button">
+        f
       </li>
     </ul>
   );
@@ -63,7 +66,10 @@ export default function Header({}) {
   return (
     <header className="header">
       <div className="header__logo logo">
-        <h1>Netflusk</h1>
+        <h1>
+          <span>Net</span>
+          <span>flux</span>
+        </h1>
       </div>
 
       <NavBar />

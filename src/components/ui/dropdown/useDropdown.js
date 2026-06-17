@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 
-import useOnClickOutside from "../../hooks/useOnClickOutside";
-import useDetectDevice from "../../hooks/useDetectDevice";
+import useOnClickOutside from "../../../hooks/useOnClickOutside";
+import useDetectDevice from "../../../hooks/useDetectDevice";
 
 const useDropdown = (dropdownType) => {
   const [show, setShow] = useState(false);
