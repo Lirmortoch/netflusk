@@ -5,9 +5,30 @@ import useDetectDevice from "../../../hooks/useDetectDevice";
 
 const useDropdown = (dropdownType) => {
   const [show, setShow] = useState(false);
+  const [tooClose, setTooClose] = useState(false);
   
   const dropdownRef = useRef(null);
-  
+  const dropdownContentRef = useRef(null);
+  const dropdownBtnRef = useRef(null);
+
+  useEffect(() => {
+    const rect = dropdownContentRef.current.getBoundingClientRect();
+    
+    const distanceToRight = window.innerWidth - rect.right;
+    const distanceToLeft = window.innerWidth - rect.left;
+    const halfDropdownWidth = rect.width / 2;
+
+    if (distanceToRight < 5) {
+      setTooClose({direction: 'right', isTrue: true});
+    }
+    else if (distanceToLeft < 5) {
+      setTooClose({direction: 'left', isTrue: true});
+    }
+    else {
+      setTooClose(false);
+    }
+  }, []);
+
   useOnClickOutside(dropdownRef, () => setShow(false), dropdownType !== 'hover');
   const device = useDetectDevice();
   
@@ -33,7 +54,7 @@ const useDropdown = (dropdownType) => {
     } 
   }
 
-  return { show, dropdownRef, handleToggleDropDown, dropdownEvents, }
+  return { show, dropdownRef, handleToggleDropDown, dropdownEvents, dropdownContentRef, tooClose, dropdownBtnRef, }
 }
 
 export default useDropdown;

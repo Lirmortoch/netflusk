@@ -27,6 +27,7 @@
   --text-color: light-dark(#1f1f1f, #f1f1f1);
   --bg-color: light-dark(#f1f1f1, #1f1f1f);
   --accent-color: light-dark(#e2a432, #3c6fea);
+  --logo-color: light-dark(#8e24aa, #c054fc);
 
   --hover-color: rgba(128, 128, 128, 0.15);
   --accent-hover-color: light-dark(#e2a4322c, #3c70ea7e);
@@ -74,7 +75,7 @@ h1, h2, h3, h4, h5, h6 {
 .header__logo > h1 {
   font-size: 2em;
   font-weight: 700;
-  color: purple;
+  color: var(--logo-color);
 
   letter-spacing: 2px;
 
@@ -136,20 +137,35 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: auto;
 }
 
-.dropdown.dropdown-styles-1 > .dropdown__content {
-  top: calc(100%);
+:not(.dropdown.smart) {
+  &.dropdown-styles-1 > .dropdown__content {
+    top: calc(100%);
+  }
 
+  &.tooClose-right > .dropdown__content {
+    right: 0;
+  }
+
+  &.drop-on-middle > .dropdown__content {
+    left: 50%;
+    translate: -50% 0%;
+  }
+
+  &.drop-on-middle.tooClose-right > .dropdown__content {
+    left: -50%;
+  }
+  &.drop-on-middle.tooClose-left > .dropdown__content {
+    right: -50%;
+  }
+}
+
+.dropdown-styles-1 > .dropdown__content {
   opacity: 0;
   transform: translateY(-10px);
 }
-.dropdown.dropdown-styles-1.open > .dropdown__content {
+.dropdown-styles-1.open > .dropdown__content {
   opacity: 1;
   transform: translateY(0);
-}
-
-.drop-on-middle > .dropdown__content {
-  left: 50%;
-  translate: -50% 0%;
 }
 
 .dropdown.dropdown-styles-2 > .dropdown__content {
@@ -184,6 +200,15 @@ h1, h2, h3, h4, h5, h6 {
   left: calc(50% - var(--dropdown-top-square-size) / 2);
   top: calc(var(--dropdown-top-square-size) / -2);
   transform: rotate(45deg);
+}
+
+.dropdown-styles-arrow.drop-on-middle.tooClose-right > .dropdown__content > div::before {
+  left: calc(90% - var(--dropdown-top-square-size) / 2);
+  translate: -50% 0%;
+}
+.dropdown-styles-arrow.drop-on-middle.tooClose-left > .dropdown__content > div::before {
+  right: calc(90% - var(--dropdown-top-square-size) / 2);
+  translate: 50% 0%;
 }
 
 /* Link lists styles */
@@ -246,7 +271,7 @@ h1, h2, h3, h4, h5, h6 {
 .themes-list__item {
   border-radius: 10px;
   cursor: pointer;
-
+  
   width: 125px;
 }
 .themes-list__item.current::after {
@@ -254,6 +279,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .themes-list__item * {
   background-color: transparent;
+  cursor: pointer;
 }
 .themes-list__item:hover {
   background-color: var(--accent-color);
