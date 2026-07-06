@@ -5,17 +5,11 @@ import Dropdown from "./ui/dropdown/Dropdown.jsx";
 import ThemeSwitcher from './themeSwitcher/ThemeSwitcher.jsx';
 
 // Main navigation bar
-function LinksButton({ text }) {
-  return (
-    <button className="links__button dropdown__button">{text}</button>
-  );
-}
-
 function NavBar() {
   return (
     <nav className="header__nav header-nav">
       <Dropdown 
-        dropdownBtn={<LinksButton text='People' />}
+        dropdownBtn={{text: 'People', classes: "links__button",}}
         dropdownContentStyles="dropdown-styles-1"
         dropdownStyles="header-nav__links links dropdown"
         dropdownType='hover'
@@ -28,7 +22,7 @@ function NavBar() {
       </Dropdown>
       
       <Dropdown 
-        dropdownBtn={<LinksButton text='Awards' />}
+        dropdownBtn={{text: 'Awards', classes: "links__button",}}
         dropdownContentStyles="dropdown-styles-1"
         dropdownStyles="header-nav__links links dropdown"
         dropdownType='hover'

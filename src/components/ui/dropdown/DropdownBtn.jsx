@@ -1,7 +1,7 @@
-export default function DropdownBtn({ content, classes = '', buttonRef = null }) {
+export default function DropdownBtn({ text, classes = '', buttonRef = null, }) {
   return (
     <button ref={buttonRef} className={`dropdown__button${classes !== '' ? ' ' + classes : ''}`}>
-      {content}
-    </button>
+      {text}
+    </button> 
   );
 }

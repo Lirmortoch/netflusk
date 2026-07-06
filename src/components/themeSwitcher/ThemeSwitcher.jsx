@@ -11,11 +11,9 @@ import { SunIcon, MoonIcon, SystemSettingsIcon } from "./Icons.jsx";
 // Theme switcher
 function ThemeButton({icon}) {
   return (
-    <button className="theme-switcher__button">
-      <div>
-        {icon}
-      </div>
-    </button>
+    <div>
+      {icon}
+    </div>
   );
 }
 export default function ThemeSwitcher() {
@@ -46,10 +44,11 @@ export default function ThemeSwitcher() {
   
   return (
     <Dropdown 
-      dropdownBtn={<ThemeButton icon={themeIcons[theme]} />}
+      dropdownBtn={{ classes: "theme-switcher__button", text: <ThemeButton icon={themeIcons[theme]} />}}
       dropdownStyles="dropdown theme-switcher drop-on-middle"
       dropdownContentStyles="dropdown-styles-2 dropdown-styles-arrow"
       dropdownType='click'
+      isSmart={true}
       >
         {themeList}
     </Dropdown>

@@ -12,22 +12,25 @@ const useDropdown = (dropdownType) => {
   const dropdownBtnRef = useRef(null);
 
   useEffect(() => {
-    const rect = dropdownContentRef.current.getBoundingClientRect();
-    
-    const distanceToRight = window.innerWidth - rect.right;
-    const distanceToLeft = window.innerWidth - rect.left;
-    const halfDropdownWidth = rect.width / 2;
+    if (show) {
+      const rect = dropdownContentRef.current.getBoundingClientRect();
+      const btnRect = dropdownBtnRef.current.getBoundingClientRect();
+      
+      const distanceToRight = window.innerWidth - rect.right;
+      const distanceToLeft = window.innerWidth - rect.left;
+      const halfDropdownWidth = rect.width / 2;
 
-    if (distanceToRight < 5) {
-      setTooClose({direction: 'right', isTrue: true});
+      if (distanceToRight < 5) {
+        setTooClose({direction: 'right', isTrue: true});
+      }
+      else if (distanceToLeft < 5) {
+        setTooClose({direction: 'left', isTrue: true});
+      }
+      else {
+        return;
+      }
     }
-    else if (distanceToLeft < 5) {
-      setTooClose({direction: 'left', isTrue: true});
-    }
-    else {
-      setTooClose(false);
-    }
-  }, []);
+  }, [show]);
 
   useOnClickOutside(dropdownRef, () => setShow(false), dropdownType !== 'hover');
   const device = useDetectDevice();
