@@ -1,18 +1,66 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useLayoutEffect } from "react"
 
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
 import useDetectDevice from "../../../hooks/useDetectDevice";
 
-const useDropdown = (dropdownType) => {
+const useDropdown = (dropdownType, isSmart = false, smartOptions) => {
   const [show, setShow] = useState(false);
-  const [tooClose, setTooClose] = useState(false);
+  const [tooClose, setTooClose] = useState({ isTrue: false, direction: '' });
+  const [dropdownPosition, setDropdownPosition] = useState(null);
   
+  // Can separate for better code organization 
+  const [mounted, setMounted] = useState(show);
+  const [visible, setVisible] = useState(false);
+  // -----------------------------------------------
+
   const dropdownRef = useRef(null);
   const dropdownContentRef = useRef(null);
   const dropdownBtnRef = useRef(null);
 
+  useLayoutEffect(() => {
+    if (!mounted || !isSmart || !dropdownBtnRef.current) return;
+
+    const btnRect = dropdownBtnRef.current.getBoundingClientRect();
+
+    let left = `${btnRect.left - btnRect.width / 2}px`;
+
+    if (smartOptions.onMiddle && !tooClose.isTrue) {
+      left = `${btnRect.left + btnRect.width / 2}px`;
+    }
+    else if (tooClose.isTrue && tooClose.direction === 'right') {
+      left = `${btnRect.left + btnRect.width}px`;
+    }
+
+    setDropdownPosition({
+      position: 'absolute',
+      top: `${btnRect.bottom}px`,
+      left,
+    });
+  }, [mounted]);
+
+  // Can separate for better code organization 2
   useEffect(() => {
     if (show) {
+      setMounted(true);
+      return;
+    }
+
+    const timer = setTimeout(() => setMounted(false), 155);
+    return () => clearTimeout(timer);
+  }, [show]);
+
+  useEffect(() => {
+    if (show && mounted) {
+      const raf = requestAnimationFrame(() => setVisible(true));
+      return () => cancelAnimationFrame(raf);
+    } else {
+      setVisible(false);
+    }
+  }, [show, mounted]);
+  // ------------------------------------------
+
+  useEffect(() => {
+    if (show && dropdownContentRef.current && dropdownBtnRef.current) {
       const rect = dropdownContentRef.current.getBoundingClientRect();
       const btnRect = dropdownBtnRef.current.getBoundingClientRect();
       
@@ -27,37 +75,48 @@ const useDropdown = (dropdownType) => {
         setTooClose({direction: 'left', isTrue: true});
       }
       else {
-        return;
+        setTooClose({ isTrue: false, direction: '' });
       }
     }
-  }, [show]);
+  }, [show, mounted]);
 
-  useOnClickOutside(dropdownRef, () => setShow(false), dropdownType !== 'hover');
+  useOnClickOutside([dropdownRef, dropdownBtnRef], () => setShow(false), dropdownType !== 'hover' && show);
+
   const device = useDetectDevice();
   
-  function handleToggleDropDown() {
-    setShow(prevShow => !prevShow);
-  }
+  const handleToggleDropdown = () => setShow(prevShow => !prevShow);
+  const handleOpenDropdown = () => setShow(true);
+  const handleCloseDropdown = () => setShow(false);
 
-  let dropdownEvents;
+  let buttonEvents = {}
+  let wrapperEvents = {}
+
   if (device === 'tablet' || device === 'mobile') {
-    dropdownEvents = { 
-      onTouchEnd: handleToggleDropDown, 
-    }
+    buttonEvents = { onClick: handleToggleDropdown }
   }
   else if (dropdownType === 'click') {
-    dropdownEvents = {
-      onClick: handleToggleDropDown,
-    }
+    buttonEvents = { onClick: handleToggleDropdown }
   }
   else if (dropdownType === 'hover') {
-    dropdownEvents = { 
-      onMouseEnter: handleToggleDropDown, 
-      onMouseLeave: handleToggleDropDown 
-    } 
+    wrapperEvents = { onMouseEnter: handleOpenDropdown, onMouseLeave: handleCloseDropdown }
+
+    if (isSmart) {
+      buttonEvents = { onMouseEnter: handleOpenDropdown, onMouseLeave: handleCloseDropdown }
+    }
   }
 
-  return { show, dropdownRef, handleToggleDropDown, dropdownEvents, dropdownContentRef, tooClose, dropdownBtnRef, }
+  return { 
+    show, 
+    dropdownRef, 
+    wrapperEvents, 
+    buttonEvents,
+    dropdownContentRef, 
+    tooClose, 
+    dropdownBtnRef, 
+    dropdownPosition, 
+    mounted,
+    visible,
+  }
 }
 
 export default useDropdown;

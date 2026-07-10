@@ -62,6 +62,11 @@ h1, h2, h3, h4, h5, h6 {
   font-family: Roboto Normal;
 }
 
+#smart-dropdown {
+  position: absolute;
+  top: 0;
+}
+
 /* Header styles */
 .header {
   display: grid;
@@ -129,7 +134,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 2px 2px 2px 2px var(--dropdown-shadow);
   border: 1px solid var(--dropdown-border-color);
 
-  transition: opacity 150ms ease-in-out, transform 150ms ease-in-out, all 0.3s ease 0s;
+  transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
 
   z-index: 100;
 }

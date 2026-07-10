@@ -49,6 +49,7 @@ export default function ThemeSwitcher() {
       dropdownContentStyles="dropdown-styles-2 dropdown-styles-arrow"
       dropdownType='click'
       isSmart={true}
+      smartOptions={{ onMiddle: true }}
       >
         {themeList}
     </Dropdown>

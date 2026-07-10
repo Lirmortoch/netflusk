@@ -1,13 +1,25 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-export default function useOnClickOutside(ref, handler, attached = true) {
+export default function useOnClickOutside(refs, handler, attached = true) {
+  const handlerRef = useRef(handler);
+  const refsRef = useRef(refs);
+
+  useEffect(() => {
+    handlerRef.current = handler;
+    refsRef.current = refs;
+  }, [handler, refs]);
+
   useEffect(() => {
     if (!attached) return;
 
     const listener = event => {
-      if (!ref.current || ref.current.contains(event.target)) return;
+      const refsArray = Array.isArray(refs) ? refs : [refs];
 
-      handler(event);
+      const isInside = refsArray.some(
+        (ref) => ref.current && ref.current.contains(event.target)
+      );
+
+      if (!isInside) handlerRef.current(event);
     }
 
     document.addEventListener('click', listener);
@@ -17,5 +29,5 @@ export default function useOnClickOutside(ref, handler, attached = true) {
       document.removeEventListener('click', listener);
       document.removeEventListener('touchend', listener);
     }
-  }, [ref, handler]);
+  }, [attached]);
 }

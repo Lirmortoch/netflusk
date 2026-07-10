@@ -6,14 +6,50 @@ import useDropdown from './useDropdown';
 import DropdownContent from "./DropdownContent";
 import DropdownBtn from './DropdownBtn';
 
-export default function Dropdown({ children, dropdownBtn, dropdownType, dropdownStyles = '', dropdownContentStyles = '' }) {
-  const { show, dropdownRef, handleToggleDropDown, dropdownEvents, dropdownContentRef, tooClose, dropdownBtnRef, } = useDropdown(dropdownType);
+export default function Dropdown({ children, dropdownBtn, dropdownType, dropdownStyles = '', dropdownContentStyles = '', isSmart = false, smartOptions = {} }) {
+  
+  const { 
+    show, 
+    dropdownRef, 
+    buttonEvents, 
+    wrapperEvents,
+    dropdownContentRef, 
+    tooClose, 
+    dropdownBtnRef, 
+    dropdownPosition, 
+    mounted,
+    visible,
+  } = useDropdown(dropdownType, isSmart, smartOptions);
 
   const additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${show ? ' open' : ''}`;
 
+  if (isSmart) {
+    const additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${visible ? ' open' : ''}`;
+    
+    return (
+      <>
+        <DropdownBtn {...dropdownBtn} buttonRef={dropdownBtnRef} events={buttonEvents} />
+
+        {mounted && createPortal(
+          <div
+            {...wrapperEvents}
+            className={`${dropdownStyles} ${dropdownContentStyles} ${additionalClasses}`}
+            ref={dropdownRef}
+            style={{...dropdownPosition}}
+          >
+            <DropdownContent open={show} contentRef={dropdownContentRef}>
+              {children}
+            </DropdownContent>
+          </div>,
+          document.getElementById('smart-dropdown')
+        )}
+      </>
+    )
+  }
+
   return (
-    <div {...dropdownEvents} className={`${dropdownStyles} ${dropdownContentStyles}${additionalClasses}`} ref={dropdownRef} >
-      <DropdownBtn {...dropdownBtn} buttonRef={dropdownBtnRef} ></DropdownBtn>
+    <div {...wrapperEvents} className={`${dropdownStyles} ${dropdownContentStyles}${additionalClasses}`} ref={dropdownRef} >
+      <DropdownBtn {...dropdownBtn} buttonRef={dropdownBtnRef} events={buttonEvents} />
 
       <DropdownContent open={show} contentRef={dropdownContentRef} >
         {children}
