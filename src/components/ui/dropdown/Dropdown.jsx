@@ -21,10 +21,10 @@ export default function Dropdown({ children, dropdownBtn, dropdownType, dropdown
     visible,
   } = useDropdown(dropdownType, isSmart, smartOptions);
 
-  const additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${show ? ' open' : ''}`;
+  let additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${show ? ' open' : ''}`;
 
   if (isSmart) {
-    const additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${visible ? ' open' : ''}`;
+    additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${visible ? ' open' : ''}`;
     
     return (
       <>

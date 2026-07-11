@@ -2,16 +2,14 @@ import { useState, useEffect, useRef, useLayoutEffect } from "react"
 
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
 import useDetectDevice from "../../../hooks/useDetectDevice";
+import useAnimation from '../../../hooks/useAnimation';
 
 const useDropdown = (dropdownType, isSmart = false, smartOptions) => {
   const [show, setShow] = useState(false);
   const [tooClose, setTooClose] = useState({ isTrue: false, direction: '' });
   const [dropdownPosition, setDropdownPosition] = useState(null);
   
-  // Can separate for better code organization 
-  const [mounted, setMounted] = useState(show);
-  const [visible, setVisible] = useState(false);
-  // -----------------------------------------------
+  const { mounted, visible } = useAnimation(show);
 
   const dropdownRef = useRef(null);
   const dropdownContentRef = useRef(null);
@@ -37,27 +35,6 @@ const useDropdown = (dropdownType, isSmart = false, smartOptions) => {
       left,
     });
   }, [mounted]);
-
-  // Can separate for better code organization 2
-  useEffect(() => {
-    if (show) {
-      setMounted(true);
-      return;
-    }
-
-    const timer = setTimeout(() => setMounted(false), 155);
-    return () => clearTimeout(timer);
-  }, [show]);
-
-  useEffect(() => {
-    if (show && mounted) {
-      const raf = requestAnimationFrame(() => setVisible(true));
-      return () => cancelAnimationFrame(raf);
-    } else {
-      setVisible(false);
-    }
-  }, [show, mounted]);
-  // ------------------------------------------
 
   useEffect(() => {
     if (show && dropdownContentRef.current && dropdownBtnRef.current) {
