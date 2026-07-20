@@ -7,7 +7,8 @@ const appSlicer = createSlice({
   },
   reducers: {
     setTheme(state, action) {
-      return { ...state, theme: action.payload }
+      const newState = { ...state, theme: action.payload };
+      return newState;
     }
   }
 });

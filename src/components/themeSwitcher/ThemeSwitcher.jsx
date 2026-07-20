@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { handleSetTheme } from "../../store/appReducer.js";
 
-import Dropdown from "../ui/dropdown/Dropdown.jsx";
+import Dropdown from "../ui/Dropdown/Dropdown.jsx";
 
 import { wordToRegularCase } from '../../utils/utils.js'
 
