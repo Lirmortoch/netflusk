@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import appReducer from './store/appReducer';
+import appReducer from './appReducer';
+import guestSessionReducer from './guestSessionReducer';
 
 const store = configureStore({
   reducer: {
     appSettings: appReducer,
+    guestSession: guestSessionReducer,
   }
 });
 

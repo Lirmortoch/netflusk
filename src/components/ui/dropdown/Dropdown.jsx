@@ -24,7 +24,7 @@ export default function Dropdown({ children, dropdownBtn, dropdownType, dropdown
   let additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${show ? ' open' : ''}`;
 
   if (isSmart) {
-    additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${visible ? ' open' : ''}`;
+    additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${visible ? 'open' : ''} smart`;
     
     return (
       <>

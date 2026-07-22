@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react"
+import { useState, useRef, useLayoutEffect } from "react"
 
 import useOnClickOutside from "../../../hooks/useOnClickOutside";
 import useDetectDevice from "../../../hooks/useDetectDevice";
 import useAnimation from '../../../hooks/useAnimation';
 
-const useDropdown = (dropdownType, isSmart = false, smartOptions) => {
+const useDropdown = (dropdownType, isSmart = false, smartOptions = {}) => {
   const [show, setShow] = useState(false);
   const [tooClose, setTooClose] = useState({ isTrue: false, direction: '' });
   const [dropdownPosition, setDropdownPosition] = useState(null);
-  
+
   const { mounted, visible } = useAnimation(show);
 
   const dropdownRef = useRef(null);
@@ -16,51 +16,48 @@ const useDropdown = (dropdownType, isSmart = false, smartOptions) => {
   const dropdownBtnRef = useRef(null);
 
   useLayoutEffect(() => {
-    if (!mounted || !isSmart || !dropdownBtnRef.current) return;
+    if (!mounted || !isSmart || !dropdownBtnRef.current || !dropdownContentRef.current) return;
 
     const btnRect = dropdownBtnRef.current.getBoundingClientRect();
+    const contentWidth = dropdownContentRef.current.offsetWidth;
 
-    let left = `${btnRect.left - btnRect.width / 2}px`;
+    let idealLeft = smartOptions.onMiddle
+      ? btnRect.left + btnRect.width / 2 - contentWidth / 2
+      : btnRect.left;
 
-    if (smartOptions.onMiddle && !tooClose.isTrue) {
-      left = `${btnRect.left + btnRect.width / 2}px`;
+    const distanceToRight = window.innerWidth - (idealLeft + contentWidth);
+    const distanceToLeft = idealLeft;
+
+    let direction = '';
+    let isTrue = false;
+
+    if (distanceToRight < 5) {
+      direction = 'right';
+      isTrue = true;
+    } else if (distanceToLeft < 5) {
+      direction = 'left';
+      isTrue = true;
     }
-    else if (tooClose.isTrue && tooClose.direction === 'right') {
-      left = `${btnRect.left + btnRect.width}px`;
+
+    let left = idealLeft;
+    if (isTrue && direction === 'right') {
+      left = btnRect.right - contentWidth;
+    } else if (isTrue && direction === 'left') {
+      left = btnRect.left;
     }
 
+    setTooClose({ isTrue, direction });
     setDropdownPosition({
       position: 'absolute',
       top: `${btnRect.bottom}px`,
-      left,
+      left: `${left}px`,
     });
   }, [mounted]);
-
-  useEffect(() => {
-    if (show && dropdownContentRef.current && dropdownBtnRef.current) {
-      const rect = dropdownContentRef.current.getBoundingClientRect();
-      const btnRect = dropdownBtnRef.current.getBoundingClientRect();
-      
-      const distanceToRight = window.innerWidth - rect.right;
-      const distanceToLeft = window.innerWidth - rect.left;
-      const halfDropdownWidth = rect.width / 2;
-
-      if (distanceToRight < 5) {
-        setTooClose({direction: 'right', isTrue: true});
-      }
-      else if (distanceToLeft < 5) {
-        setTooClose({direction: 'left', isTrue: true});
-      }
-      else {
-        setTooClose({ isTrue: false, direction: '' });
-      }
-    }
-  }, [show, mounted]);
 
   useOnClickOutside([dropdownRef, dropdownBtnRef], () => setShow(false), dropdownType !== 'hover' && show);
 
   const device = useDetectDevice();
-  
+
   const handleToggleDropdown = () => setShow(prevShow => !prevShow);
   const handleOpenDropdown = () => setShow(true);
   const handleCloseDropdown = () => setShow(false);
@@ -82,15 +79,15 @@ const useDropdown = (dropdownType, isSmart = false, smartOptions) => {
     }
   }
 
-  return { 
-    show, 
-    dropdownRef, 
-    wrapperEvents, 
+  return {
+    show,
+    dropdownRef,
+    wrapperEvents,
     buttonEvents,
-    dropdownContentRef, 
-    tooClose, 
-    dropdownBtnRef, 
-    dropdownPosition, 
+    dropdownContentRef,
+    tooClose,
+    dropdownBtnRef,
+    dropdownPosition,
     mounted,
     visible,
   }

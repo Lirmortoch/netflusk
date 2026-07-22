@@ -10,7 +10,7 @@ const useAnimation = (showComponent) => {
       return;
     }
 
-    const timer = setTimeout(() => setMounted(false), 155);
+    const timer = setTimeout(() => setMounted(false), 175);
     return () => clearTimeout(timer);
   }, [showComponent]);
 

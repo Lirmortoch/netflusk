@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { 
-  createGuestSession as _createGuestSession,
+  getGuestSession,
 } from '../services/authService';
 
 export const createGuestSession = createAsyncThunk(
   'user/getGuestSession',
   async (query, thunkAPI) => {
     try {
-      const data = await _createGuestSession();
+      const data = await getGuestSession();
       return data;
     }
     catch (err) {
@@ -45,7 +45,10 @@ const guestSessionSlice = createSlice({
       })
       .addCase(createGuestSession.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload;
+        state.error = action.payload.error;
       });
   },
 });
+
+// export const { setUser } = userSlice.actions;
+export default guestSessionSlice.reducer;
