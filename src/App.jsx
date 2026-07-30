@@ -11,7 +11,6 @@ import { createGuestSession } from './store/guestSessionReducer';
 
 function App() {
   const dispatch = useDispatch();
-  const { guestSession, status, error, } = useSelector(({ guestSession }) => guestSession);
 
   useAppTheme();
 

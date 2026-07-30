@@ -52,6 +52,7 @@ const useDropdown = (dropdownType, isSmart = false, smartOptions = {}) => {
       top: `${btnRect.bottom}px`,
       left: `${left}px`,
     });
+
   }, [mounted]);
 
   useOnClickOutside([dropdownRef, dropdownBtnRef], () => setShow(false), dropdownType !== 'hover' && show);

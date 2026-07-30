@@ -9,6 +9,7 @@ export const createGuestSession = createAsyncThunk(
   async (query, thunkAPI) => {
     try {
       const data = await getGuestSession();
+  
       return data;
     }
     catch (err) {
@@ -41,7 +42,7 @@ const guestSessionSlice = createSlice({
       })
       .addCase(createGuestSession.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.guestSession = action.payload.guestSession;
+        state.guestSession = action.payload;
       })
       .addCase(createGuestSession.rejected, (state, action) => {
         state.status = 'failed';
