@@ -30,35 +30,79 @@ const getGuestSession = async () => {
     throw err;
   }
 }
+const createReqToken = async () => {
+  try {
+    const url = `${baseUrl}/authentication/token/new`;
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json', 
+        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+      },
+    }
 
-// const createReqToken = async () => {
-//   try {
-//     const url = 'https://api.themoviedb.org/3/authentication/token/new';
-//     const options = {
-//       method: 'GET',
-//       headers: {
-//         accept: 'application/json', 
-//         Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
-//       },
-//     }
+    const response = await fetch(url, options);
 
-//     const response = await fetch(url, options);
+    if (!response.ok) {
+      return thunkAPI.rejectWithValue('Can\'t create request token');
+    }
 
-//     if (!response.ok) {
-//       return thunkAPI.rejectWithValue('Can\'t create request token');
-//     }
+    const data = await response.json();
 
-//     const data = await response.json();
+    return data;
+  }
+  catch (err) {
+    error(`Can't create request token: ${err.message}`);
+    return err;
+  }
+}
+const createSessionId = async (request_token) => {
+  try {
+    const url = `${baseUrl}/authentication/session/new`;
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+      },
+      body: {
+        request_token: JSON.stringify(request_token),
+      }
+    }
 
-//     return data;
-//   }
-//   catch (err) {
-//     error(`Can't create request token: ${err.message}`);
-//     return err;
-//   }
-// }
+    const response = await fetch(url, options);
+    return response;
+  }
+  catch (err) {
+    error(err);
+    return err;
+  }
+}
+const getUserData = async (session_id) => {
+  try {
+    const url = `${baseUrl}/account/${session_id}`;
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        // 'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+      },
+    }
+
+    const response = await fetch(url, options);
+    return response;
+  }
+  catch (err) {
+    error(err);
+    return err;
+  }
+}
 
 export {
   getGuestSession,
-  // createReqToken,
+  createReqToken,
+  createSessionId,
+  getUserData,
 }
