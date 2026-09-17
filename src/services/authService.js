@@ -86,7 +86,7 @@ const getUserData = async (session_id) => {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        // 'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
       },
     }

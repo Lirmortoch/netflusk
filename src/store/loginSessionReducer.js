@@ -1,14 +1,39 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { error } from "../utils/logger";
 
-import { createReqToken } from "../services/authService";
+import { createReqToken, createSessionId, getUserData } from "../services/authService";
 
 export const createRequestToken = createAsyncThunk(
   'loginSession/createRequestToken', 
   async (query, thunkAPI) => {
     try {
       const data = await createReqToken();
-
+      return data;
+    }
+    catch (err) {
+      error(err);
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+export const createSession = createAsyncThunk(
+  'loginSession/createSession',
+  async (query, thunkAPI) => {
+    try {
+      const data = await createSessionId();
+      return data;
+    }
+    catch (err) {
+      error(err);
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+export const getUserInfo = createAsyncThunk(
+  'loginSession/getUserData',
+  async (query, thunkAPI) => {
+    try {
+      const data = await getUserData();
       return data;
     }
     catch (err) {
@@ -18,12 +43,11 @@ export const createRequestToken = createAsyncThunk(
   }
 );
 
-
 const loginSessionSlice = createSlice({
   name: "loginSession",
   initialState: {
     loginSession: null,
-    loginStatus: 'idle',
+    loginStatus: 'loginSession-idle',
     loginError: null,
   },
 
@@ -36,24 +60,51 @@ const loginSessionSlice = createSlice({
     clearSession(state, action) {
       return {
         loginSession: null,
-        loginStatus: 'idle',
+        loginStatus: 'loginSession-idle',
         loginError: null,
       }
     },
   },
 
   extraReducers: (builder) => {
-    builder
-      .addCase(createGuestSession.pending, (state) => {
-        state.loginStatus = 'loading';
+    builder 
+      .addCase(createRequestToken.pending, (state) => {
+        state.loginStatus = 'reqToken-loading';
         state.loginError = null;
       })
-      .addCase(createGuestSession.fulfilled, (state, action) => {
-        state.loginStatus = 'succeeded';
+      .addCase(createRequestToken.fulfilled, (state, action) => {
+        state.loginStatus = 'reqToken-succeeded';
+        console.log('here --- 1');
+        // localStorage.setItem('tmdb_req_token', data);
+      })
+      .addCase(createRequestToken.rejected, (state, action) => {
+        state.loginStatus = 'reqToken-failed';
+        state.loginError = action.payload;
+      })
+
+      .addCase(createSession.pending, (state) => {
+        state.loginStatus = 'session-loading';
+        state.loginError = null;
+      })
+      .addCase(createSession.fulfilled, (state, action) => {
+        state.loginStatus = 'session-succeeded';
         state.loginSession = action.payload;
       })
-      .addCase(createGuestSession.rejected, (state, action) => {
-        state.loginStatus = 'failed';
+      .addCase(createSession.rejected, (state, action) => {
+        state.loginStatus = 'session-failed';
+        state.loginError = action.payload;
+      })
+
+      .addCase(getUserInfo.pending, (state) => {
+        state.loginStatus = 'user-loading';
+        state.loginError = null;
+      })
+      .addCase(getUserInfo.fulfilled, (state, action) => {
+        state.loginStatus = 'user-succeeded';
+        state.loginSession = action.payload;
+      })
+      .addCase(getUserInfo.rejected, (state, action) => {
+        state.loginStatus = 'user-failed';
         state.loginError = action.payload;
       });
   },

@@ -24,7 +24,7 @@ const guestSessionSlice = createSlice({
   name: 'guestSession',
   initialState: {
     guestSession: null,
-    status: 'idle',
+    status: 'guestSession-idle',
     error: null,
   },
 
@@ -37,7 +37,7 @@ const guestSessionSlice = createSlice({
     clearSession(state, action) {
       return {
         loginSession: null,
-        status: 'idle',
+        status: 'guestSession-idle',
         error: null,
       }
     },
@@ -46,15 +46,15 @@ const guestSessionSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createGuestSession.pending, (state) => {
-        state.status = 'loading';
+        state.status = 'guestSession-loading';
         state.error = null;
       })
       .addCase(createGuestSession.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = 'guestSession-succeeded';
         state.guestSession = action.payload;
       })
       .addCase(createGuestSession.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = 'guestSession-failed';
         state.error = action.payload;
       });
   },

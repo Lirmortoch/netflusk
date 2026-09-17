@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { createRequestToken } from "../../store/loginSessionReducer";
 import { error } from "../../utils/logger";
@@ -9,11 +9,9 @@ function LoginBtn({}) {
 
   async function handleLogin() {
     try {
-      const data = dispatch(createRequestToken());
-      localStorage.setItem('tmdb_req_token', data.request_token);
-
-      const approvalUrl = `https://www.themoviedb.org/authenticate/${data.request_token}?redirect_to=${encodeURIComponent(window.location.origin + '/')}`;
-      window.location.href = approvalUrl;
+      const data = await dispatch(createRequestToken()).unwrap();
+      localStorage.setItem('tmdb_req_token', data);
+      useNavigate(`/confirm-account/${data.request_token}`);
     }
     catch (err) {
       error(`Can't create request token: ${err}`);
@@ -28,7 +26,7 @@ function LoginBtn({}) {
 
 export default function ProfileTools({}) {
   const dispatch = useDispatch();
-  const { guestSession, status, error, } = useSelector(({ guestSession }) => guestSession);
+  // const { guestSession, status, error, } = useSelector(({ guestSession }) => guestSession);
   const { loginSession, loginStatus, loginError, } = useSelector(({ loginSession }) => loginSession);
 
   let elem = <LoginBtn />;
