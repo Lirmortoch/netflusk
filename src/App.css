@@ -42,6 +42,7 @@
 
 button {
   background-color: transparent;
+  cursor: pointer;
 }
 
 ul {
@@ -65,6 +66,9 @@ h1, h2, h3, h4, h5, h6 {
 #smart-dropdown {
   position: absolute;
   top: 0;
+}
+
+#modal {
 }
 
 /* Header styles */
@@ -109,6 +113,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: end;
+  gap: 10px;
 
   /* justify-self: end; */
 }
@@ -309,4 +314,8 @@ h1, h2, h3, h4, h5, h6 {
 .theme-item__text {
   text-align: center;
   font-size: 0.9em;
+}
+
+.login-btn {
+
 }

@@ -10,6 +10,7 @@ const getGuestSession = async () => {
       method: 'GET',
       headers: {
         accept: 'application/json', 
+        'content-type': 'application/json',
         Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
       },
     }
@@ -37,14 +38,16 @@ const createReqToken = async () => {
       method: 'GET',
       headers: {
         accept: 'application/json', 
-        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+        'content-type': 'application/json',
+        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
       },
     }
 
     const response = await fetch(url, options);
 
     if (!response.ok) {
-      return thunkAPI.rejectWithValue('Can\'t create request token');
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.status_message || `HTTP ${response.status}`);
     }
 
     const data = await response.json();
@@ -63,36 +66,48 @@ const createSessionId = async (request_token) => {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+        'content-type': 'application/json',
+        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
       },
-      body: {
-        request_token: JSON.stringify(request_token),
-      }
+      body: JSON.stringify({ request_token }),
     }
 
     const response = await fetch(url, options);
-    return response;
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.status_message || `HTTP ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
   }
   catch (err) {
     error(err);
     return err;
   }
 }
-const getUserData = async (session_id) => {
+const getUserInfo = async (session_id) => {
   try {
-    const url = `${baseUrl}/account/${session_id}`;
+    const url = `${baseUrl}/account/null?session_id=${session_id}`;
     const options = {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+        'content-type': 'application/json',
+        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
       },
     }
 
     const response = await fetch(url, options);
-    return response;
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.status_message || `HTTP ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
   }
   catch (err) {
     error(err);
@@ -104,5 +119,5 @@ export {
   getGuestSession,
   createReqToken,
   createSessionId,
-  getUserData,
+  getUserInfo,
 }

@@ -2,16 +2,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
 import { createRequestToken } from "../../store/loginSessionReducer";
+
 import { error } from "../../utils/logger";
 
-function LoginBtn({}) {
+function LoginBtn({ btnClassName }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   async function handleLogin() {
     try {
       const data = await dispatch(createRequestToken()).unwrap();
-      localStorage.setItem('tmdb_req_token', data);
-      useNavigate(`/confirm-account/${data.request_token}`);
+      navigate(`/confirm-account/${data.request_token}`);
     }
     catch (err) {
       error(`Can't create request token: ${err}`);
@@ -20,7 +21,7 @@ function LoginBtn({}) {
   }
 
   return (
-    <button onClick={handleLogin}>Login</button>
+    <button className={btnClassName} onClick={handleLogin}>Login</button>
   );
 }
 
@@ -29,7 +30,7 @@ export default function ProfileTools({}) {
   // const { guestSession, status, error, } = useSelector(({ guestSession }) => guestSession);
   const { loginSession, loginStatus, loginError, } = useSelector(({ loginSession }) => loginSession);
 
-  let elem = <LoginBtn />;
+  let elem = <LoginBtn btnClassName={'login-btn'} />;
 
   if (loginSession !== null && loginStatus === 'succeeded' && loginError === null) {
     elem = (

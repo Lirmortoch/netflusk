@@ -1,13 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { error } from "../utils/logger";
 
-import { createReqToken, createSessionId, getUserData } from "../services/authService";
+import { createReqToken, createSessionId, getUserInfo } from "../services/authService";
 
 export const createRequestToken = createAsyncThunk(
   'loginSession/createRequestToken', 
-  async (query, thunkAPI) => {
+  async (_query, thunkAPI) => {
     try {
       const data = await createReqToken();
+      localStorage.setItem('tmdb_req_token', JSON.stringify(data));
+
       return data;
     }
     catch (err) {
@@ -18,9 +20,11 @@ export const createRequestToken = createAsyncThunk(
 );
 export const createSession = createAsyncThunk(
   'loginSession/createSession',
-  async (query, thunkAPI) => {
+  async (token, thunkAPI) => {
     try {
-      const data = await createSessionId();
+      const data = await createSessionId(token);
+      localStorage.setItem('tmdb_session_id', JSON.stringify(data));
+
       return data;
     }
     catch (err) {
@@ -29,11 +33,11 @@ export const createSession = createAsyncThunk(
     }
   }
 );
-export const getUserInfo = createAsyncThunk(
+export const getUserData = createAsyncThunk(
   'loginSession/getUserData',
-  async (query, thunkAPI) => {
+  async (session_id, thunkAPI) => {
     try {
-      const data = await getUserData();
+      const data = await getUserInfo(session_id);
       return data;
     }
     catch (err) {
@@ -47,6 +51,7 @@ const loginSessionSlice = createSlice({
   name: "loginSession",
   initialState: {
     loginSession: null,
+    loginSessionId: null,
     loginStatus: 'loginSession-idle',
     loginError: null,
   },
@@ -60,6 +65,7 @@ const loginSessionSlice = createSlice({
     clearSession(state, action) {
       return {
         loginSession: null,
+        loginSessionId: null,
         loginStatus: 'loginSession-idle',
         loginError: null,
       }
@@ -74,8 +80,6 @@ const loginSessionSlice = createSlice({
       })
       .addCase(createRequestToken.fulfilled, (state, action) => {
         state.loginStatus = 'reqToken-succeeded';
-        console.log('here --- 1');
-        // localStorage.setItem('tmdb_req_token', data);
       })
       .addCase(createRequestToken.rejected, (state, action) => {
         state.loginStatus = 'reqToken-failed';
@@ -88,27 +92,27 @@ const loginSessionSlice = createSlice({
       })
       .addCase(createSession.fulfilled, (state, action) => {
         state.loginStatus = 'session-succeeded';
-        state.loginSession = action.payload;
+        state.loginSessionId = action.payload;
       })
       .addCase(createSession.rejected, (state, action) => {
         state.loginStatus = 'session-failed';
         state.loginError = action.payload;
       })
 
-      .addCase(getUserInfo.pending, (state) => {
+      .addCase(getUserData.pending, (state) => {
         state.loginStatus = 'user-loading';
         state.loginError = null;
       })
-      .addCase(getUserInfo.fulfilled, (state, action) => {
+      .addCase(getUserData.fulfilled, (state, action) => {
         state.loginStatus = 'user-succeeded';
         state.loginSession = action.payload;
       })
-      .addCase(getUserInfo.rejected, (state, action) => {
+      .addCase(getUserData.rejected, (state, action) => {
         state.loginStatus = 'user-failed';
         state.loginError = action.payload;
       });
   },
 });
 
-export const { setUser, clearSession } = loginSessionSlice.reducer;
+export const { setUser, clearSession } = loginSessionSlice.actions;
 export default loginSessionSlice.reducer;

@@ -7,9 +7,10 @@ import { error } from "../utils/logger"
 
 export const createGuestSession = createAsyncThunk(
   'guestSession/getGuestSession',
-  async (query, thunkAPI) => {
+  async (_arg, thunkAPI) => {
     try {
       const data = await getGuestSession();
+      localStorage.setItem('tmdb_guestSession', JSON.stringify(data));
   
       return data;
     }
@@ -60,5 +61,5 @@ const guestSessionSlice = createSlice({
   },
 });
 
-export const { setUser, clearSession } = userSlice.actions;
+export const { setUser, clearSession } = guestSessionSlice.actions;
 export default guestSessionSlice.reducer;
