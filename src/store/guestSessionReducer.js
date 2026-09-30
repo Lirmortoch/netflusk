@@ -10,7 +10,7 @@ export const createGuestSession = createAsyncThunk(
   async (_arg, thunkAPI) => {
     try {
       const data = await getGuestSession();
-      localStorage.setItem('tmdb_guestSession', JSON.stringify(data));
+      localStorage.setItem('tmdb_guest_session', JSON.stringify(data));
   
       return data;
     }
@@ -30,14 +30,13 @@ const guestSessionSlice = createSlice({
   },
 
   reducers: {
-    setUser(state, action) {
-      const guestSession = action.payload;
-
-      return {...state, guestSession};
+    setGuestSession(state, action) {
+      const payload = action.payload;
+      return {...state, ...payload}
     },
     clearSession(state, action) {
       return {
-        loginSession: null,
+        guestSession: null,
         status: 'guestSession-idle',
         error: null,
       }
@@ -61,5 +60,13 @@ const guestSessionSlice = createSlice({
   },
 });
 
-export const { setUser, clearSession } = guestSessionSlice.actions;
+export const { setGuestSession, clearSession, } = guestSessionSlice.actions;
+
+export const handleClearGuestSession = () => {
+  return (dispatch) => {
+    dispatch(clearSession());
+    localStorage.removeItem('tmdb_guest_session');
+  }
+}
+
 export default guestSessionSlice.reducer;

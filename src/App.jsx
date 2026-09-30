@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { Routes, Route, Link, useMatch, useNavigate, useParams } from 'react-router-dom';
+import { Routes, Route, Link, useMatch, useNavigate, useParams, replace } from 'react-router-dom';
 
 import './assets/reset.css';
 import './App.css';
@@ -11,10 +11,12 @@ import Loading from './components/ui/Loading/Loading';
 
 import { useAppTheme } from './hooks/useAppTheme';
 
-import { createGuestSession } from './store/guestSessionReducer';
-import { createSession, getUserData } from './store/loginSessionReducer';
+import { createGuestSession, handleClearGuestSession, setGuestSession } from './store/guestSessionReducer';
+import { createSession, getUserData, handleRestoreSession } from './store/loginSessionReducer';
 import { handleSetIsAuth } from './store/appReducer';
 import Home from './pages/Home';
+
+import { getJSON } from './utils/utils';
 
 function ConfirmAccount({}) {
   const { request_token } = useParams();
@@ -79,7 +81,7 @@ function AuthCallback({}) {
   return (
     <Modal open={isOpen} >
       <Loading callback={finishAuth} cleanupFnc={cleanupAuth}>
-        <div className='callback spin'>
+        <div className='loading callback spin'>
           <div></div>
         </div>
       </Loading>
@@ -90,11 +92,37 @@ function AuthCallback({}) {
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
   useAppTheme();
 
+  const initStarted = useRef(false);
+
   useEffect(() => {
-    dispatch(createGuestSession());
+    if (initStarted.current) return;
+    initStarted.current = true;
+
+    const initSession = async () => {
+      const authed = await dispatch(handleRestoreSession());
+
+      if (authed) {
+        dispatch(handleClearGuestSession());
+        return;
+      }
+      
+      const savedGuestSession = getJSON('tmdb_guest_session');
+      const expiresAt = savedGuestSession && new Date(savedGuestSession.expires_at.replace(' UTC', 'Z').replace(' ', 'T'));
+
+      if (expiresAt && expiresAt > new Date()) {
+        const payload = {
+          guestSession: savedGuestSession,
+          status: 'guestSession-succeeded',
+        }
+        dispatch(setGuestSession(payload));
+      }
+      else dispatch(createGuestSession());
+    }
+
+    initSession();
   }, [dispatch]);
 
   return (
@@ -104,10 +132,9 @@ function App() {
 
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/confirm-account/:request_token' element={<ConfirmAccount />} />
-          
-          <Route path='/auth/callback' element={<AuthCallback />} />
 
+          <Route path='/confirm-account/:request_token' element={<ConfirmAccount />} />
+          <Route path='/auth/callback' element={<AuthCallback />} />
         </Routes>
       </div>
     </>

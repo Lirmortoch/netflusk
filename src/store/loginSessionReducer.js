@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { error } from "../utils/logger";
 
 import { createReqToken, createSessionId, getUserInfo } from "../services/authService";
+import { handleSetIsAuth } from "./appReducer";
+import { getErrorMessage, createError, normalizeErrorCode, loginErrorMessages } from "../utils/errorMessages";
 
 export const createRequestToken = createAsyncThunk(
   'loginSession/createRequestToken', 
@@ -57,10 +59,22 @@ const loginSessionSlice = createSlice({
   },
 
   reducers: {
-    setUser(state, action) {
+    seLoginSession(state, action) {
       const loginSession = action.payload;
-
       return {...state, loginSession}
+    },
+    setSessionId(state, action) {
+      const loginSessionId = action.payload;
+      return {...state, loginSessionId}
+    },
+    setLoginSessionState(state, action) {
+      const payload = action.payload;
+      return {...state, ...payload}
+    },
+    setLoginError(state, action) {
+      const {loginError, loginStatus} = action.payload;
+      return {...state, loginError, loginStatus}
+
     },
     clearSession(state, action) {
       return {
@@ -114,5 +128,40 @@ const loginSessionSlice = createSlice({
   },
 });
 
-export const { setUser, clearSession } = loginSessionSlice.actions;
+export const { seLoginSession, setLoginSessionState, setSessionId, clearSession, setLoginError } = loginSessionSlice.actions;
+
+export const handleRestoreSession = () => {
+  return async (dispatch) => {
+    try {
+      const session = JSON.parse(localStorage.getItem('tmdb_session_id'));
+      if (!session?.session_id) throw new Error("SESSION_NOT_FOUND");
+      
+      const user = await dispatch(getUserData(session.session_id)).unwrap();
+      if (!user.id) throw new Error('USER_FETCH_FAILED');
+
+      setSessionId(session);
+      dispatch(handleSetIsAuth(true));
+
+      return true
+    }
+    catch (err) {
+      const code = normalizeErrorCode(err);
+      const er = createError(code, getErrorMessage(code, loginErrorMessages));
+      
+      const payload = {
+        loginStatus: `${er.error.includes('USER') ? 'user' : 'session'}-failed`,
+        loginError: er,
+      };
+
+      dispatch(handleSetIsAuth(false));
+      dispatch(setLoginError(payload));
+
+      if (code !== 'NETWORK') localStorage.removeItem('tmdb_session_id');
+
+      error(err);
+      return false;
+    }
+  }
+}
+
 export default loginSessionSlice.reducer;
