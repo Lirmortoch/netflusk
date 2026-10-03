@@ -4,7 +4,7 @@ import useOnClickOutside from "../../../hooks/useOnClickOutside";
 import useDetectDevice from "../../../hooks/useDetectDevice";
 import useAnimation from '../../../hooks/useAnimation';
 
-const useDropdown = (dropdownType, isSmart = false, smartOptions = {}) => {
+const useDropdown = (dropdownType, isSmart = false, smartOptions = {}, hasArrow = false) => {
   const [show, setShow] = useState(false);
   const [tooClose, setTooClose] = useState({ isTrue: false, direction: '' });
   const [dropdownPosition, setDropdownPosition] = useState(null);
@@ -38,12 +38,16 @@ const useDropdown = (dropdownType, isSmart = false, smartOptions = {}) => {
       direction = 'left';
       isTrue = true;
     }
-
+    
     let left = idealLeft;
     if (isTrue && direction === 'right') {
-      left = btnRect.right - contentWidth;
+      // need to add button's padding
+      const correctArrow = Math.ceil(contentWidth / 10) - 5;
+      left = btnRect.right - contentWidth + (hasArrow && correctArrow + (correctArrow/10));
     } else if (isTrue && direction === 'left') {
-      left = btnRect.left;
+      // need to add button's padding
+      const correctArrow = Math.ceil(contentWidth / 10) - 5;
+      left = btnRect.left + (hasArrow && correctArrow + (correctArrow/10));
     }
 
     setTooClose({ isTrue, direction });

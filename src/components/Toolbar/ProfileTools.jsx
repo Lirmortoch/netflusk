@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
-import { createRequestToken } from "../../store/loginSessionReducer";
+import { createRequestToken, handleLogout } from "../../store/loginSessionReducer";
+import Dropdown from "../ui/Dropdown/Dropdown";
 
 import { error } from "../../utils/logger";
 
@@ -39,14 +40,38 @@ export default function ProfileTools({}) {
   const { loginSession, loginStatus, loginError, } = useSelector(({ loginSession }) => loginSession);
 
   let elem = <LoginBtn btnClassName={'login-btn'} />;
-  
+
   if (loginSession !== null && loginStatus === 'user-succeeded' && loginError === null) {
+    const optionsList = (
+      <div>
+        <ul className="profile-tools__list tools-list">
+          <li className="tools-list__item">
+            <a href="https://www.themoviedb.org/settings/account">Account Settings</a>
+          </li>
+          <li className="tools-list__item">
+            <button onClick={() => dispatch(handleLogout)}>Logout</button>
+          </li>
+        </ul>
+      </div>
+    );
+
     elem = (
       <div className="profile-tools__wrap">
-        <ProfileAvatar hasAvatar={loginSession?.avatar.tmdb.avatar_path !== null} avatar={loginSession?.avatar} username={loginSession.username} />
-
-        
+        <Dropdown
+          dropdownBtn={{ classes: 'profile-tools-btn', text: <ProfileAvatar hasAvatar={loginSession?.avatar.tmdb.avatar_path !== null} avatar={loginSession?.avatar} username={loginSession.username} /> }}
+          dropdownStyles="dropdown profile-tools"
+          dropdownContentStyles="dropdown-styles-2 dropdown-styles-arrow"
+          dropdownType='click'
+          isSmart={true}
+        >
+          {optionsList}
+        </Dropdown>
       </div>
+    );
+  }
+  else if (loginStatus.includes('loading')) {
+    elem = (
+      <div className="loader"></div>
     );
   }
 

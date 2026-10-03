@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { createPortal } from "react-dom";
 
 import useDropdown from './useDropdown';
@@ -19,12 +18,23 @@ export default function Dropdown({ children, dropdownBtn, dropdownType, dropdown
     dropdownPosition, 
     mounted,
     visible,
-  } = useDropdown(dropdownType, isSmart, smartOptions);
+  } = useDropdown(dropdownType, isSmart, smartOptions, dropdownContentStyles.includes('dropdown-styles-arrow'));
 
-  let additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${show ? ' open' : ''}`;
+  let additionalClasses = `${tooClose.isTrue ? 'tooClose-' + tooClose.direction + ' ' : ''}${show ? ' open' : ''}`;
 
   if (isSmart) {
-    additionalClasses = `${tooClose.isTrue ? ' tooClose-' + tooClose.direction : ''}${visible ? 'open' : ''} smart`;
+    let smartOptionsClass = '';
+    const smartOptionsArray = Object.entries(smartOptions);
+
+    smartOptionsArray.forEach((item, idx) => {
+      if (item) {
+        const temp = item[0].slice(2).toLowerCase();
+        smartOptionsClass += temp === 'middle' ? `drop-on-${temp}` : `drop-${temp}`;
+      }
+      if (smartOptionsArray.length > 1 && idx !== smartOptionsArray.length - 1) smartOptionsClass += ' ';
+    });
+
+    additionalClasses = `${tooClose.isTrue ? 'tooClose-' + tooClose.direction + ' ' : ''}${visible ? 'open' : ''} smart${smartOptionsClass === '' ? '' : ` ${smartOptionsClass}`}`;
     
     return (
       <>

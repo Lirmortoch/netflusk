@@ -45,7 +45,7 @@ export default function ThemeSwitcher() {
   return (
     <Dropdown 
       dropdownBtn={{ classes: "theme-switcher__button", text: <ThemeButton icon={themeIcons[theme]} />}}
-      dropdownStyles="dropdown theme-switcher drop-on-middle"
+      dropdownStyles="dropdown theme-switcher"
       dropdownContentStyles="dropdown-styles-2 dropdown-styles-arrow"
       dropdownType='click'
       isSmart={true}

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { error } from "../utils/logger";
 
 import { createReqToken, createSessionId, getUserInfo } from "../services/authService";
-import { handleSetIsAuth } from "./appReducer";
+import { handleSetHasAuth } from "./appReducer";
 import { getErrorMessage, createError, normalizeErrorCode, loginErrorMessages } from "../utils/errorMessages";
 
 export const createRequestToken = createAsyncThunk(
@@ -139,8 +139,8 @@ export const handleRestoreSession = () => {
       const user = await dispatch(getUserData(session.session_id)).unwrap();
       if (!user.id) throw new Error('USER_FETCH_FAILED');
 
-      setSessionId(session);
-      dispatch(handleSetIsAuth(true));
+      dispatch(setSessionId(session));
+      dispatch(handleSetHasAuth(true));
 
       return true
     }
@@ -153,7 +153,7 @@ export const handleRestoreSession = () => {
         loginError: er,
       };
 
-      dispatch(handleSetIsAuth(false));
+      dispatch(handleSetHasAuth(false));
       dispatch(setLoginError(payload));
 
       if (code !== 'NETWORK') localStorage.removeItem('tmdb_session_id');
@@ -161,6 +161,11 @@ export const handleRestoreSession = () => {
       error(err);
       return false;
     }
+  }
+}
+export const handleLogout = () => {
+  return (dispatch)  => {
+    dispatch(clearSession());
   }
 }
 

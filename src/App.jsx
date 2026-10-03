@@ -13,7 +13,7 @@ import { useAppTheme } from './hooks/useAppTheme';
 
 import { createGuestSession, handleClearGuestSession, setGuestSession } from './store/guestSessionReducer';
 import { createSession, getUserData, handleRestoreSession } from './store/loginSessionReducer';
-import { handleSetIsAuth } from './store/appReducer';
+import { handleSetHasAuth } from './store/appReducer';
 import Home from './pages/Home';
 
 import { getJSON } from './utils/utils';
@@ -61,12 +61,12 @@ function AuthCallback({}) {
       if (user.id) {
         localStorage.removeItem('tmdb_req_token');
 
-        dispatch(handleSetIsAuth(true));
+        dispatch(handleSetHasAuth(true));
       }
-      else dispatch(handleSetIsAuth(false));
+      else dispatch(handleSetHasAuth(false));
     }
     catch (err) {
-      dispatch(handleSetIsAuth(false));
+      dispatch(handleSetHasAuth(false));
       throw new Error(`Can't auth user: ${err.error}`);
     }
     finally {
@@ -81,9 +81,7 @@ function AuthCallback({}) {
   return (
     <Modal open={isOpen} >
       <Loading callback={finishAuth} cleanupFnc={cleanupAuth}>
-        <div className='loading callback spin'>
-          <div></div>
-        </div>
+        <div className='loader'></div>
       </Loading>
     </Modal>
   );

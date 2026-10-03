@@ -213,11 +213,11 @@ h1, h2, h3, h4, h5, h6 {
   transform: rotate(45deg);
 }
 
-.dropdown-styles-arrow.drop-on-middle.tooClose-right > .dropdown__content > div::before {
+.dropdown-styles-arrow.tooClose-right > .dropdown__content > div::before {
   left: calc(90% - var(--dropdown-top-square-size) / 2);
   translate: -50% 0%;
 }
-.dropdown-styles-arrow.drop-on-middle.tooClose-left > .dropdown__content > div::before {
+.dropdown-styles-arrow.tooClose-left > .dropdown__content > div::before {
   right: calc(90% - var(--dropdown-top-square-size) / 2);
   translate: 50% 0%;
 }
@@ -318,4 +318,57 @@ h1, h2, h3, h4, h5, h6 {
 
 .login-btn {
 
+}
+
+.profile-tools__wrap {
+  width: fit-content;
+}
+.profile-tools-btn {
+  transition: all 0.3s ease 0s;
+  border-radius: 5px;
+  padding: 5px;
+}
+.profile-tools__list {
+
+}
+.tools-list {
+  color: black;
+  padding: 10px 0;
+  width: max-content;
+}
+.tools-list__item {
+  transition: all 0.3s ease 0s;
+  padding: 5px;
+}
+:hover:is(.tools-list__item, .profile-tools-btn) {
+  background-color: var(--logo-color);
+  color: white;
+}
+.tools-list__item > * {
+  width: 100%;
+  display: inline;
+  text-align: left;
+  color: inherit;
+}
+.tools-list__item:not(:last-of-type) {
+  margin-bottom: 5px;
+}
+
+.loader {
+  width: 60px;
+  aspect-ratio: 4;
+
+  --_g: no-repeat radial-gradient(circle closest-side,#000 90%,#0000);
+  background: 
+    var(--_g) 0%   50%,
+    var(--_g) 50%  50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 100%;
+  
+  animation: l7 1s infinite linear;
+}
+@keyframes l7 {
+  33%{background-size:calc(100%/3) 0%  ,calc(100%/3) 100%,calc(100%/3) 100%}
+  50%{background-size:calc(100%/3) 100%,calc(100%/3) 0%  ,calc(100%/3) 100%}
+  66%{background-size:calc(100%/3) 100%,calc(100%/3) 100%,calc(100%/3) 0%  }
 }
