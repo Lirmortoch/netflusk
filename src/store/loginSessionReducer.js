@@ -3,7 +3,7 @@ import { error } from "../utils/logger";
 
 import { createReqToken, createSessionId, getUserInfo } from "../services/authService";
 import { handleSetHasAuth } from "./appReducer";
-import { getErrorMessage, createError, normalizeErrorCode, loginErrorMessages } from "../utils/errorMessages";
+import { getErrorMessage, createError, normalizeErrorCode, loginErrorMessages, toLoginErrorCode } from "../utils/errorMessages";
 import { createGuestSession } from "./guestSessionReducer";
 
 export const createRequestToken = createAsyncThunk(
@@ -135,7 +135,10 @@ export const handleRestoreSession = () => {
   return async (dispatch) => {
     try {
       const session = JSON.parse(localStorage.getItem('tmdb_session_id'));
-      if (!session?.session_id) dispatch(handleSetHasAuth(false));
+      if (!session?.session_id) {
+        dispatch(handleSetHasAuth(false));
+        return false;
+      }
       
       const user = await dispatch(getUserData(session.session_id)).unwrap();
       if (!user.id) throw new Error('USER_FETCH_FAILED');
@@ -146,7 +149,7 @@ export const handleRestoreSession = () => {
       return true
     }
     catch (err) {
-      const code = normalizeErrorCode(err);
+      const code = normalizeErrorCode(err, toLoginErrorCode);
       const er = createError(code, getErrorMessage(code, loginErrorMessages));
       
       const payload = {

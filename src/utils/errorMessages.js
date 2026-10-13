@@ -14,10 +14,23 @@ export const loginErrorMessages = {
   DEFAULT:
     "Something hiccuped while signing you in. Give it another try.",
 };
+export const toLoginErrorCode = (rawMessage = '') => {
+  const msg = String(rawMessage).toLowerCase();
+
+  if (msg.includes('session denied')) return 'ACCESS_DENIED';
+  if (msg.includes('failed to fetch') || msg.includes('networkerror')) return 'NETWORK';
+  if (msg.includes('http 401')) return 'SESSION_EXPIRED';
+
+  return 'DEFAULT';
+};
+
+
 
 export const getErrorMessage = (code, map) => map[code] ?? map.DEFAULT;
+
 export const createError = (code, msg) => ({error: code, message: msg});
-export const normalizeErrorCode = (err) => {
+
+export const normalizeErrorCode = (err, normalizeFnc) => {
   const msg = typeof err === 'string' ? err : err?.message ?? '';
-  return msg in loginErrorMessages ? msg : toLoginErrorCode(msg);
+  return msg in loginErrorMessages ? msg : normalizeFnc(msg);
 }

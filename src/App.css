@@ -29,13 +29,16 @@
   --accent-color: light-dark(#e2a432, #3c6fea);
   --logo-color: light-dark(#8e24aa, #c054fc);
 
-  --hover-color: rgba(128, 128, 128, 0.15);
+  --hover-color: light-dark(rgba(141, 141, 141, 0.15), rgba(201, 201, 201, 0.15));
   --accent-hover-color: light-dark(#e2a4322c, #3c70ea7e);
 
   --dropdown-bg-color: light-dark(#f5f5f5, #272727);
   --dropdown-shadow: light-dark(rgba(0,0,0,0.25), rgba(0,0,0,0.35));
   --dropdown-border-color: light-dark(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.35));
   --dropdown-top-square-size: 10px;
+
+  --loader-main-color: light-dark(#000, #fff);
+  --loader-second-color: light-dark(#0000, #ffffff00);
 
   font-size: 18px;
 }
@@ -235,6 +238,8 @@ h1, h2, h3, h4, h5, h6 {
   padding: 3px 0;
 
   display: flex;
+
+  color: var(--text-color);
 }
 .link-list__item > a {
   padding: 2px 5px;
@@ -332,7 +337,7 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 .tools-list {
-  color: black;
+  color: var(--text-color);
   padding: 10px 0;
   width: max-content;
 }
@@ -342,7 +347,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 :hover:is(.tools-list__item, .profile-tools-btn) {
   background-color: var(--logo-color);
-  color: white;
+  color: var(--bg-color);
 }
 .tools-list__item > * {
   width: 100%;
@@ -356,12 +361,23 @@ h1, h2, h3, h4, h5, h6 {
 .profile-tools > .dropdown__content {
   border-radius: 5px;
 }
+.profile-tools__login-btn {
+  transition: all 0.3s ease 0s;
+  border-radius: 5px;
+  padding: 5px;
+}
+.profile-tools__login-btn:hover {
+  background-color: var(--hover-color);
+}
+.profile-tools__login-btn:active {
+  transform: scale3d(0.975, 0.975, 0.975);
+}
 
 .loader {
   width: 60px;
   aspect-ratio: 4;
 
-  --_g: no-repeat radial-gradient(circle closest-side,#000 90%,#0000);
+  --_g: no-repeat radial-gradient(circle closest-side, var(--loader-main-color) 90%, var(--loader-second-color));
   background: 
     var(--_g) 0%   50%,
     var(--_g) 50%  50%,

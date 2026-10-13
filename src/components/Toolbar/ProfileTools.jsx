@@ -39,7 +39,7 @@ export default function ProfileTools({}) {
   const dispatch = useDispatch();
   const { loginSession, loginStatus, loginError, } = useSelector(({ loginSession }) => loginSession);
 
-  let elem = <LoginBtn btnClassName={'login-btn'} />;
+  let elem = <LoginBtn btnClassName={'profile-tools__login-btn'} />;
 
   if (loginSession !== null && loginStatus === 'user-succeeded' && loginError === null) {
     const optionsList = (
