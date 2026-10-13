@@ -353,6 +353,9 @@ h1, h2, h3, h4, h5, h6 {
 .tools-list__item:not(:last-of-type) {
   margin-bottom: 5px;
 }
+.profile-tools > .dropdown__content {
+  border-radius: 5px;
+}
 
 .loader {
   width: 60px;

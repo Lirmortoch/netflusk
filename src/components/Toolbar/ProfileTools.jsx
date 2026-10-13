@@ -49,7 +49,7 @@ export default function ProfileTools({}) {
             <a href="https://www.themoviedb.org/settings/account">Account Settings</a>
           </li>
           <li className="tools-list__item">
-            <button onClick={() => dispatch(handleLogout)}>Logout</button>
+            <button onClick={() => dispatch(handleLogout())}>Logout</button>
           </li>
         </ul>
       </div>

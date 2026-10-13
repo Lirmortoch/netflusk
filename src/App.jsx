@@ -12,7 +12,7 @@ import Loading from './components/ui/Loading/Loading';
 import { useAppTheme } from './hooks/useAppTheme';
 
 import { createGuestSession, handleClearGuestSession, setGuestSession } from './store/guestSessionReducer';
-import { createSession, getUserData, handleRestoreSession } from './store/loginSessionReducer';
+import { createSession, getUserData, handleRestoreSession, setLoginError } from './store/loginSessionReducer';
 import { handleSetHasAuth } from './store/appReducer';
 import Home from './pages/Home';
 
@@ -62,11 +62,14 @@ function AuthCallback({}) {
         localStorage.removeItem('tmdb_req_token');
 
         dispatch(handleSetHasAuth(true));
+        dispatch(setLoginError(null));
+        dispatch(handleClearGuestSession());
       }
       else dispatch(handleSetHasAuth(false));
     }
     catch (err) {
       dispatch(handleSetHasAuth(false));
+      dispatch(createGuestSession());
       throw new Error(`Can't auth user: ${err.error}`);
     }
     finally {
@@ -97,6 +100,7 @@ function App() {
 
   useEffect(() => {
     if (initStarted.current) return;
+    if (window.location.pathname === '/auth/callback') return;
     initStarted.current = true;
 
     const initSession = async () => {
@@ -108,12 +112,15 @@ function App() {
       }
       
       const savedGuestSession = getJSON('tmdb_guest_session');
-      const expiresAt = savedGuestSession && new Date(savedGuestSession.expires_at.replace(' UTC', 'Z').replace(' ', 'T'));
+      const expiresAt = savedGuestSession?.expires_at
+        ? new Date(savedGuestSession.expires_at.replace(' UTC', 'Z').replace(' ', 'T'))
+        : null;
 
       if (expiresAt && expiresAt > new Date()) {
         const payload = {
           guestSession: savedGuestSession,
           status: 'guestSession-succeeded',
+          error: null,
         }
         dispatch(setGuestSession(payload));
       }
