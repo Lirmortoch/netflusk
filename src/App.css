@@ -39,6 +39,7 @@
 
   --loader-main-color: light-dark(#000, #fff);
   --loader-second-color: light-dark(#0000, #ffffff00);
+  --loader-width: 75px;
 
   font-size: 18px;
 }
@@ -373,7 +374,7 @@ h1, h2, h3, h4, h5, h6 {
   transform: scale3d(0.975, 0.975, 0.975);
 }
 
-.loader {
+.loader-1 {
   width: 60px;
   aspect-ratio: 4;
 
@@ -384,10 +385,68 @@ h1, h2, h3, h4, h5, h6 {
     var(--_g) 100% 50%;
   background-size: calc(100%/3) 100%;
   
-  animation: l7 1s infinite linear;
+  animation: loader-1-animation 1s infinite linear;
 }
-@keyframes l7 {
+
+.modal {
+  min-width: 30rem;
+  padding: 0;
+  z-index: 2;
+  background: #d5c7bc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  animation: slide-down-fade-in 0.3s ease-out forwards;
+}
+.modal::backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.loader-modal {
+  position: relative;
+  top: 50vh;
+  left: calc(50vw - var(--loader-width) / 2);
+
+  width: max-content;
+  min-width: calc(var(--loader-width) + 25px);
+
+  padding: 1rem;
+
+  background: #e7e2de;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 26%);
+}
+.loader-modal > .loader-1 {
+  width: var(--loader-width);
+  margin-inline: auto;
+}
+
+@keyframes loader-1-animation {
   33%{background-size:calc(100%/3) 0%  ,calc(100%/3) 100%,calc(100%/3) 100%}
   50%{background-size:calc(100%/3) 100%,calc(100%/3) 0%  ,calc(100%/3) 100%}
   66%{background-size:calc(100%/3) 100%,calc(100%/3) 100%,calc(100%/3) 0%  }
+}
+@keyframes slide-down-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slide-up-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

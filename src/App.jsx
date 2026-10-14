@@ -82,9 +82,9 @@ function AuthCallback({}) {
   }
 
   return (
-    <Modal open={isOpen} >
+    <Modal open={isOpen} modalClassName='loader-modal' >
       <Loading callback={finishAuth} cleanupFnc={cleanupAuth}>
-        <div className='loader'></div>
+        <div className='loader-1'></div>
       </Loading>
     </Modal>
   );

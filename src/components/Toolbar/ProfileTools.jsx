@@ -71,7 +71,7 @@ export default function ProfileTools({}) {
   }
   else if (loginStatus.includes('loading')) {
     elem = (
-      <div className="loader"></div>
+      <div className="loader-1"></div>
     );
   }
 
