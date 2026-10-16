@@ -6,6 +6,7 @@ const appSlicer = createSlice({
     theme: 'light',
     hasAuth: false,
   },
+  
   reducers: {
     setTheme(state, action) {
       const newState = { ...state, theme: action.payload };

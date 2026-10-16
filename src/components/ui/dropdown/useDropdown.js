@@ -41,13 +41,13 @@ const useDropdown = (dropdownType, isSmart = false, smartOptions = {}, hasArrow 
     
     let left = idealLeft;
     if (isTrue && direction === 'right') {
-      // need to add button's padding
+      // button padding: 5px, arrow size: 10px
       const correctArrow = Math.ceil(contentWidth / 10) - 5;
-      left = btnRect.right - contentWidth + (hasArrow && correctArrow + (correctArrow/10));
+      left = btnRect.right - contentWidth + (hasArrow && (correctArrow * 1.1));
     } else if (isTrue && direction === 'left') {
-      // need to add button's padding
+      // button padding: 5px, arrow size: 10px
       const correctArrow = Math.ceil(contentWidth / 10) - 5;
-      left = btnRect.left + (hasArrow && correctArrow + (correctArrow/10));
+      left = btnRect.left + (hasArrow && (correctArrow * 1.1));
     }
 
     setTooClose({ isTrue, direction });

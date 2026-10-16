@@ -3,9 +3,9 @@ import { API_READ_ACCESS_TOKEN } from '../utils/config';
 
 const baseUrl = 'https://api.themoviedb.org/3';
 
-const getUserData = async (session_id = null, account_id = null) => {
+const getUserData = async (account_id) => {
   try {
-    const url = `${baseUrl}/account/${!account_id && session_id ? 'null' : account_id}${!session_id && account_id ? '' : `?session_id=${session_id}`}`;
+    const url = `${baseUrl}/account/${account_id}`;
     const options = {
       method: 'GET',
       headers: {
