@@ -29,7 +29,7 @@ const getGuestSession = async () => {
   }
   catch (err) {
     error(`Can't get guest session: ${err.message}`);
-    throw err;
+    return err;
   }
 }
 const createReqToken = async () => {
