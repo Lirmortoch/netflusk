@@ -17,22 +17,6 @@ export default function NavBar() {
             </li>
           </ul>
       </Dropdown>
-      
-      <Dropdown 
-        dropdownBtn={{text: 'Awards', classes: "links__button",}}
-        dropdownContentStyles="dropdown-styles-1"
-        dropdownStyles="header-nav__links links dropdown"
-        dropdownType='hover'
-        >
-          <ul className="links__list link-list">
-            <li className="link-list__item">
-              <Link to={``}>Popular</Link>
-            </li>
-            <li className="link-list__item">
-              <Link to={``}>Upcoming</Link>
-            </li>
-          </ul>
-      </Dropdown>
 
       <Link to={``}>Search</Link>
     </nav>
