@@ -11,15 +11,22 @@ const getUserData = async (account_id) => {
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${API_READ_ACCESS_TOKEN}`,
       },
     }
 
     const response = await fetch(url, options);
-    return response;
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.status_message || `HTTP ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
   }
   catch (err) {
-    error(err);
+    error(`Can't get user's data: ${err}`);
     return err;
   }
 }

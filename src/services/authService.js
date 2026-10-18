@@ -84,7 +84,7 @@ const createSessionId = async (request_token) => {
     return data;
   }
   catch (err) {
-    error(err);
+    error(`Can't create session ID: ${err}`);
     return err;
   }
 }
@@ -111,7 +111,7 @@ const getUserInfo = async (session_id) => {
     return data;
   }
   catch (err) {
-    error(err);
+    error(`Can't get user's info: ${err}`);
     return err;
   }
 }
