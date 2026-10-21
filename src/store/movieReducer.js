@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { error } from "../utils/logger"
 
-const movieReducer = createSlice({
+const movieSlice = createSlice({
   name: 'movies',
   initialState: {
     data: null,
@@ -16,4 +16,4 @@ const movieReducer = createSlice({
 });
 
 
-export default movieReducer.reducer;
+export default movieSlice.reducer;
