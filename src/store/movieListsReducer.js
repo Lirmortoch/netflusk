@@ -60,11 +60,24 @@ export const getUpcomingMovies = createAsyncThunk(
     }
   }
 );
-export const getTrendingMovies = createAsyncThunk(
-  'movieLists/getTrendingMovies',
-  async (time_window = 'day', thunkAPI) => {
+export const getTodayTrendingMovies = createAsyncThunk(
+  'movieLists/getTodayTrendingMovies',
+  async (_query, thunkAPI) => {
     try {
-      const data = await _getTrendingMovies(time_window);
+      const data = await _getTrendingMovies();
+      return data;
+    } 
+    catch (err) {
+      error(err);
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+export const getWeekTrendingMovies = createAsyncThunk(
+  'movieLists/getWeekTrendingMovies',
+  async (_query, thunkAPI) => {
+    try {
+      const data = await _getTrendingMovies('week');
       return data;
     } 
     catch (err) {
@@ -97,9 +110,14 @@ const movieListsSlice = createSlice({
       status: 'upcoming-idle',
       error: null,
     },
-    trending: {
+    trendingToday: {
       data: null,
-      status: 'upcoming-idle',
+      status: 'trendingToday-idle',
+      error: null,
+    },
+    trendingWeek: {
+      data: null,
+      status: 'trendingWeek-idle',
       error: null,
     },
   },
@@ -121,9 +139,13 @@ const movieListsSlice = createSlice({
       const upcoming = action.payload;
       return { ...state, upcoming, }
     },
-    setTrending(state, action) {
-      const trending = action.payload;
-      return { ...state, trending, }
+    setTrendingToday(state, action) {
+      const trendingToday = action.payload;
+      return { ...state, trendingToday, }
+    },
+    setTrendingWeek(state, action) {
+      const trendingWeek = action.payload;
+      return { ...state, trendingWeek, }
     },
   },
 
@@ -181,22 +203,34 @@ const movieListsSlice = createSlice({
         state.upcoming.error = action.payload;
       })
 
-      .addCase(getTrendingMovies.pending, (state) => {
-        state.trending.status = 'trending-loading';
-        state.trending.error = null;
+      .addCase(getTodayTrendingMovies.pending, (state) => {
+        state.trendingToday.status = 'trendingToday-loading';
+        state.trendingToday.error = null;
       })
-      .addCase(getTrendingMovies.fulfilled, (state, action) => {
-        state.trending.status = 'trending-succeeded';
-        state.trending.data = action.payload;
+      .addCase(getTodayTrendingMovies.fulfilled, (state, action) => {
+        state.trendingToday.status = 'trendingToday-succeeded';
+        state.trendingToday.data = action.payload;
       })
-      .addCase(getTrendingMovies.rejected, (state, action) => {
-        state.trending.status = 'trending-failed';
-        state.trending.error = action.payload;
+      .addCase(getTodayTrendingMovies.rejected, (state, action) => {
+        state.trendingToday.status = 'trendingToday-failed';
+        state.trendingToday.error = action.payload;
+      })
+
+      .addCase(getWeekTrendingMovies.pending, (state) => {
+        state.trendingWeek.status = 'trendingWeek-loading';
+        state.trendingWeek.error = null;
+      })
+      .addCase(getWeekTrendingMovies.fulfilled, (state, action) => {
+        state.trendingWeek.status = 'trendingWeek-succeeded';
+        state.trendingWeek.data = action.payload;
+      })
+      .addCase(getWeekTrendingMovies.rejected, (state, action) => {
+        state.trendingWeek.status = 'trendingWeek-failed';
+        state.trendingWeek.error = action.payload;
       })
   }
 });
 
-export const { setNowPlaying, setPopular, setTopRated, setUpcoming, } = movieListsSlice.actions;
-
+export const { setNowPlaying, setPopular, setTopRated, setUpcoming, setTrendingToday, } = movieListsSlice.actions;
 
 export default movieListsSlice.reducer;

@@ -14,7 +14,9 @@ import { useAppTheme } from './hooks/useAppTheme';
 import { createGuestSession, handleClearGuestSession, setGuestSession } from './store/guestSessionReducer';
 import { createSession, getUserData, handleRestoreSession, setLoginError } from './store/loginSessionReducer';
 import { handleSetHasAuth } from './store/appReducer';
-import Home from './pages/Home';
+import { getNowPlayingMovies, getPopularMovies, getTopRatedMovies, getUpcomingMovies, getTodayTrendingMovies, getWeekTrendingMovies, } from './store/movieListsReducer';
+
+import Home from './pages/Home/Home';
 
 import { getJSON } from './utils/utils';
 
@@ -97,6 +99,15 @@ function App() {
   useAppTheme();
 
   const initStarted = useRef(false);
+
+  useEffect(() => {
+    dispatch(getNowPlayingMovies());
+    dispatch(getPopularMovies());
+    dispatch(getTopRatedMovies());
+    dispatch(getUpcomingMovies());
+    dispatch(getTodayTrendingMovies());
+    dispatch(getWeekTrendingMovies());
+  }, []);
 
   useEffect(() => {
     if (initStarted.current) return;
