@@ -27,7 +27,7 @@ const getUserData = async (account_id) => {
   }
   catch (err) {
     error(`Can't get user's data: ${err}`);
-    return err;
+    throw err;
   }
 }
 

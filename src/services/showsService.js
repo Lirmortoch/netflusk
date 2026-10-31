@@ -28,7 +28,7 @@ const getAiringTodayShows = async (page = 1) => {
   }
   catch (err) {
     error(`Can't get 'airing today' shows: ${err}`);
-    return err;
+    throw err;
   }
 }
 const getOnTheAirTodayShows = async (page = 1) => {
@@ -56,7 +56,7 @@ const getOnTheAirTodayShows = async (page = 1) => {
   }
   catch (err) {
     error(`Can't get 'on the air' shows: ${err}`);
-    return err;
+    throw err;
   }
 }
 const getPopularShows = async (page = 1) => {
@@ -84,7 +84,7 @@ const getPopularShows = async (page = 1) => {
   }
   catch (err) {
     error(`Can't get popular shows: ${err}`);
-    return err;
+    throw err;
   }
 }
 const getTopRatedShows = async (page = 1) => {
@@ -112,7 +112,7 @@ const getTopRatedShows = async (page = 1) => {
   }
   catch (err) {
     error(`Can't get top rated shows: ${err}`);
-    return err;
+    throw err;
   }
 }
 
@@ -142,7 +142,7 @@ const getTrendingShows = async (time_window = 'day') => {
   }
   catch (err) {
     error(`Can't get trending shows: ${err}`);
-    return err;
+    throw err;
   }
 }
 

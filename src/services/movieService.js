@@ -28,7 +28,7 @@ const getNowPlayingMovies = async (page = 1) => {
   }
   catch (err) {
     error(`Can't get 'now playing' movies: ${err}`);
-    return err;
+    throw err;
   }
 }
 const getPopularMovies = async (page = 1) => {
@@ -56,7 +56,7 @@ const getPopularMovies = async (page = 1) => {
   }
   catch (err) {
     error(`Can't get popular movies: ${err}`);
-    return err;
+    throw err;
   }
 }
 const getTopRatedMovies = async (page = 1) => {
@@ -84,7 +84,7 @@ const getTopRatedMovies = async (page = 1) => {
   }
   catch (err) {
     error(`Can't get 'top rated' movies: ${err}`);
-    return err;
+    throw err;
   }
 }
 const getUpcomingMovies = async (page = 1) => {
@@ -112,7 +112,7 @@ const getUpcomingMovies = async (page = 1) => {
   }
   catch (err) {
     error(`Can't get upcoming movies: ${err}`);
-    return err;
+    throw err;
   }
 }
 const getTrendingMovies = async (time_window = 'day') => {
@@ -140,7 +140,7 @@ const getTrendingMovies = async (time_window = 'day') => {
   }
   catch (err) {
     error(`Can't get trending movies: ${err}`);
-    return err;
+    throw err;
   }
 }
 

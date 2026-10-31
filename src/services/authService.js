@@ -29,7 +29,7 @@ const getGuestSession = async () => {
   }
   catch (err) {
     error(`Can't get guest session: ${err.message}`);
-    return err;
+    throw err;
   }
 }
 const createReqToken = async () => {
@@ -57,7 +57,7 @@ const createReqToken = async () => {
   }
   catch (err) {
     error(`Can't create request token: ${err.message}`);
-    return err;
+    throw err;
   }
 }
 const createSessionId = async (request_token) => {
@@ -85,7 +85,7 @@ const createSessionId = async (request_token) => {
   }
   catch (err) {
     error(`Can't create session ID: ${err}`);
-    return err;
+    throw err;
   }
 }
 const getUserInfo = async (session_id) => {
@@ -112,7 +112,7 @@ const getUserInfo = async (session_id) => {
   }
   catch (err) {
     error(`Can't get user's info: ${err}`);
-    return err;
+    throw err;
   }
 }
 

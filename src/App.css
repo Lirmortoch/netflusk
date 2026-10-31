@@ -108,8 +108,10 @@ h1, h2, h3, h4, h5, h6 {
   justify-self: center;
 }
 .header-nav__links {
+  color: var(--text-color);
+}
+.header-nav__links:not(:last-of-type) {
   margin-right: 15px;
-  color: #000000;
 }
 
 /* Toolbar styles */
@@ -424,6 +426,8 @@ h1, h2, h3, h4, h5, h6 {
   width: var(--loader-width);
   margin-inline: auto;
 }
+
+
 
 @keyframes loader-1-animation {
   33%{background-size:calc(100%/3) 0%  ,calc(100%/3) 100%,calc(100%/3) 100%}

@@ -28,7 +28,7 @@ const getPopularPeople = async (page = 1) => {
   }
   catch (err) {
     error(`Can't get popular people: ${err}`);
-    return err;
+    throw err;
   }
 }
 
