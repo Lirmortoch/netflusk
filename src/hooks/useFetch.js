@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export function useFetch(initialValue, fetchFn, fetchFnArgs) {
   const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState();
+  const [error, setError] = useState(false);
   const [fetchedData, setFetchedData] = useState(initialValue);
 
   useEffect(() => {
@@ -10,6 +10,7 @@ export function useFetch(initialValue, fetchFn, fetchFnArgs) {
       setIsFetching(true);
       try {
         const data = await fetchFn(...fetchFnArgs);
+ 
         setFetchedData(data);
       }
       catch (err) {
