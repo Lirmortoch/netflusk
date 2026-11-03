@@ -21,7 +21,7 @@ export function useFetch(initialValue, fetchFn, fetchFnArgs) {
     }
 
     fetchData();
-  }, [fetchFn]);
+  }, [fetchFn, ...fetchFnArgs]);
 
   return { isFetching, error, fetchedData, setFetchedData }
 }

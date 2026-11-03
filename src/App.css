@@ -427,6 +427,31 @@ h1, h2, h3, h4, h5, h6 {
   margin-inline: auto;
 }
 
+.slider__card {
+}
+.slider-card {
+}
+
+.slider-card__link {
+}
+.slider-card__wrap {
+}
+.slider-card__title {
+}
+.slider-card-title {
+}
+.slider-card-title__text {
+}
+.slider-card-title__metadata {
+}
+.slider-card-metadata {
+}
+.slider-card-metadata__year {
+}
+.slider-card-metadata__rating {
+}
+.slider-card__background {
+}
 
 
 @keyframes loader-1-animation {

@@ -5,7 +5,7 @@ const appSlicer = createSlice({
   initialState: {
     theme: 'light',
     hasAuth: false,
-    movieOrShows: 'movie',
+    moviesOrShows: 'movie',
   },
   
   reducers: {
