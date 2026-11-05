@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useFetch(initialValue, fetchFn, fetchFnArgs) {
+export function useFetch(initialValue, fetchFn, fetchFnArgs = null) {
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState(false);
   const [fetchedData, setFetchedData] = useState(initialValue);
@@ -9,7 +9,7 @@ export function useFetch(initialValue, fetchFn, fetchFnArgs) {
     async function fetchData() {
       setIsFetching(true);
       try {
-        const data = await fetchFn(...fetchFnArgs);
+        const data = fetchFnArgs !== null ? await fetchFn(...fetchFnArgs) : await fetchFn();
  
         setFetchedData(data);
       }

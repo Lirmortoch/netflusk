@@ -41,7 +41,7 @@
   --loader-second-color: light-dark(#0000, #ffffff00);
   --loader-width: 75px;
 
-  font-size: 18px;
+  font-size: 16px;
 }
 
 button {
@@ -86,7 +86,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Logo styles */
 .header__logo > h1 {
-  font-size: 2em;
+  font-size: 2.25em;
   font-weight: 700;
   color: var(--logo-color);
 
@@ -134,7 +134,7 @@ h1, h2, h3, h4, h5, h6 {
 
   position: relative;
 
-  font-size: 1em;
+  font-size: 1.125em;
 }
 
 .dropdown__content {
@@ -321,7 +321,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .theme-item__text {
   text-align: center;
-  font-size: 0.9em;
+  font-size: 0.875em;
 }
 
 .login-btn {
@@ -428,29 +428,110 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .slider__card {
+  margin: 10px;
 }
 .slider-card {
+  color: var(--text-color);
+
+  width: 200px;
+  height: 300px;
+}
+
+.slider-card :is(.slider-card__wrap, .slider-card__title-wrap, .slider-card__background > img) {
+  border-radius: 10px;
+}
+
+
+.slider-card-1 {
+
+}
+.slider-card-1:hover .slider-card__background > img {
+  
 }
 
 .slider-card__link {
+  color: white;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
 }
+
 .slider-card__wrap {
+  width: 100%;
+  height: 100%;
+
+  box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.5);
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.5);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.5);
+
+  position: relative;
+}
+
+.slider-card__title-wrap {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+
+  width: 100%;
+  height: 50%;
+
+  background-image: linear-gradient(to top, rgb(0 0 0 / 0.8), rgb(0 0 0 / 0.2) 50%, transparent);
+  pointer-events: none; 
 }
 .slider-card__title {
+  padding: 12px 16px;
+
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
 }
 .slider-card-title {
+  width: 100%;
 }
 .slider-card-title__text {
+  font-size: 0.875em;
 }
+
 .slider-card-title__metadata {
+  
 }
 .slider-card-metadata {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 0.75em;
 }
 .slider-card-metadata__year {
 }
 .slider-card-metadata__rating {
 }
+
+
+.metadata-rating {
+  display: flex;
+  gap: 4px;
+  color: #e7b757;
+}
+.metadata-rating__star {
+  width: 12px;
+  height: 12px;
+}
+.metadata-rating__text {
+}
+
 .slider-card__background {
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  z-index: 1;
+}
+.slider-card__background > img {
+  max-width: 100%;
+  max-width: 100%;
+  
 }
 
 

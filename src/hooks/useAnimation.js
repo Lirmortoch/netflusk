@@ -18,7 +18,8 @@ const useAnimation = (showComponent) => {
     if (showComponent && mounted) {
       const raf = requestAnimationFrame(() => setVisible(true));
       return () => cancelAnimationFrame(raf);
-    } else {
+    } 
+    else {
       setVisible(false);
     }
   }, [showComponent, mounted]);

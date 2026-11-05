@@ -11,23 +11,38 @@ import { normalizeMovie, normalizeShow } from '../../utils/normalizeTitleData';
 
 // import Slider from '../../components/ui/Slider/Slider';
 
-function Slider({ children, classes = null }) {
+function Star({ color = 'currentColor' }) {
   return (
-    <ul className={`slider${classes !== null ? ` ${classes}` : ''}`}>
-      { children }
-    </ul>
+    <>
+    <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 width="100%" height="100%" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+    <path fill={color} d="M62.799,23.737c-0.47-1.399-1.681-2.419-3.139-2.642l-16.969-2.593L35.069,2.265
+      C34.419,0.881,33.03,0,31.504,0c-1.527,0-2.915,0.881-3.565,2.265l-7.623,16.238L3.347,21.096c-1.458,0.223-2.669,1.242-3.138,2.642
+      c-0.469,1.4-0.115,2.942,0.916,4l12.392,12.707l-2.935,17.977c-0.242,1.488,0.389,2.984,1.62,3.854
+      c1.23,0.87,2.854,0.958,4.177,0.228l15.126-8.365l15.126,8.365c0.597,0.33,1.254,0.492,1.908,0.492c0.796,0,1.592-0.242,2.269-0.72
+      c1.231-0.869,1.861-2.365,1.619-3.854l-2.935-17.977l12.393-12.707C62.914,26.68,63.268,25.138,62.799,23.737z"/>
+  </svg>
+  </>
   );
 }
-function SliderCard({ name, date, rating, poster_path }) {
+function Card({ name, date, rating, poster_path }) {
   return (
-    <li className='slider__card slider-card'>
+    <li className='slider__card slider-card slider-card-1'>
       <Link to={``} className='slider-card__link'>
         <div className='slider-card__wrap'>
-          <div className='slider-card__title slider-card-title'>
-            <h4 className='slider-card-title__text'>{name}</h4>
-            <div className='slider-card-title__metadata slider-card-metadata'>
-              <div className="slider-card-metadata__year">{date}</div>
-              <div className="slider-card-metadata__rating">{rating}</div>
+
+          <div className="slider-card__title-wrap">
+            <div className='slider-card__title slider-card-title'>
+              <h4 className='slider-card-title__text'>{name}</h4>
+              <div className='slider-card-title__metadata slider-card-metadata'>
+                <div className="slider-card-metadata__year">{date}</div>
+                <div className="slider-card-metadata__rating metadata-rating">
+                  <div className="metadata-rating__star">
+                    <Star></Star>
+                  </div>
+                  <div className="metadata-rating__text">{rating}</div>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -45,6 +60,13 @@ function SliderCard({ name, date, rating, poster_path }) {
     </li>
   );
 }
+function Slider({ children, classes = null }) {
+  return (
+    <ul className={`slider${classes !== null ? ` ${classes}` : ''}`}>
+      { children }
+    </ul>
+  );
+}
 
 
 function HomePageSlider({ items, sliderClasses = null }) {
@@ -52,21 +74,22 @@ function HomePageSlider({ items, sliderClasses = null }) {
     <Slider classes={sliderClasses}>
       {
         items.map(item => (
-          <SliderCard key={item.id} {...item} />
+          <Card key={item.id} {...item} />
         ))
       }
     </Slider>
   );
 }
 
-function HomePageBlock({ moviesOrShows, title, moviesFnc, showsFnc, classes = null }) {
+function HomePageBlock({ moviesOrShows, title, moviesFnc, showsFnc, fncArgs = null, blockClasses = nul, headerClasses = null, titleClasses = null, additionalAfterTitle = null }) {
   const {
     isFetching: isLoading,
     error: blockError,
     fetchedData: blockData,
   } = useFetch(
     null, 
-    moviesOrShows === 'movies' ? moviesFnc : showsFnc
+    moviesOrShows === 'movies' ? moviesFnc : showsFnc,
+    fncArgs,
   );
 
   let blockItem;
@@ -81,11 +104,12 @@ function HomePageBlock({ moviesOrShows, title, moviesFnc, showsFnc, classes = nu
   }
 
   return (
-    <section className={`main-page__block main-page-block${classes !== null ? ` ${classes}` : ''}`}>
-      <div className="main-page-block__header">
-        <h3 className='main-page-block__title'>
+    <section className={`main-page__block main-page-block${blockClasses !== null ? ` ${blockClasses}` : ''}`}>
+      <div className={`main-page-block__header${headerClasses ? ` ${headerClasses}` : '' }`}>
+        <h3 className={`main-page-block__title${titleClasses ? ` ${titleClasses}` : '' }`}>
           {title}
         </h3>
+        {additionalAfterTitle}
       </div>
       { blockItem }
     </section>
@@ -94,45 +118,31 @@ function HomePageBlock({ moviesOrShows, title, moviesFnc, showsFnc, classes = nu
 
 function Trending({ moviesOrShows }) {
   const [trendingTimeWindow, setTrendingTimeWindow] = useState('day');
-  const {
-    isFetching: isLoading,
-    error: trendingError,
-    fetchedData: trendingData,
-  } = useFetch(
-    null, 
-    moviesOrShows === 'movies' ? getTrendingMovies : getTrendingShows, 
-    [ trendingTimeWindow, ]
-  );
 
   function handleSetTrendingWindow(value) {
     setTrendingTimeWindow(value)
   }
 
-  let trendingItem;
-  let trending = trendingData?.results;
-
-  if (isLoading) trendingItem = <p>...Loading</p>;
-  if (!isLoading && trending?.length > 0 && !trendingError) {
-    trendingItem = <HomePageSlider items={moviesOrShows === 'movies' ? trending.map(normalizeMovie) : trending.map(normalizeShow)} sliderClasses={'horizontal-slider main-page-block__slider'} />;
-  }
-  if (trendingError) {
-    trendingItem = <p>Error</p>;
-  }
+  const title = `${trendingTimeWindow === 'day' ? `Today's` : `This Week's`} Trending ${wordToRegularCase(moviesOrShows)}`;
   
   return (
-    <section className='main__trending trending main-page__block main-page-block'>
-      <div className="trending__header main-page-block__header">
-        <h3 className='trending-header__text main-page-block__title'>
-          {trendingTimeWindow === 'day' ? `Today's` : `This Week's`} Trending {wordToRegularCase(moviesOrShows)}
-        </h3>
+    <HomePageBlock
+      moviesOrShows={moviesOrShows}
+      title={title}
+      moviesFnc={getTrendingMovies}
+      showsFnc={getTrendingShows}
+      fncArgs={[trendingTimeWindow]}
+      blockClasses={'trending'}
+      headerClasses={'trending-header'}
+      titleClasses={'trending-header__title'}
+      additionalAfterTitle={(
         <div className='trending-header__switcher trending-switcher'>
           <button className='trending-switcher__button' value={'day'} onClick={(e) => handleSetTrendingWindow(e.target.value)}>Today</button>
 
           <button className='trending-switcher__button' value={'week'} onClick={(e) => handleSetTrendingWindow(e.target.value)}>This Week</button>
         </div>
-      </div>
-      { trendingItem }
-    </section>
+      )}
+    ></HomePageBlock>
   );
 }
 
