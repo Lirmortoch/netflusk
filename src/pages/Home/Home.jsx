@@ -27,16 +27,16 @@ function Star({ color = 'currentColor' }) {
 }
 function Card({ name, date, rating, poster_path }) {
   return (
-    <li className='slider__card slider-card slider-card-1'>
-      <Link to={``} className='slider-card__link'>
-        <div className='slider-card__wrap'>
+    <li className='slider__card card card-1'>
+      <Link to={``} className='card__link'>
+        <div className='card__wrap'>
 
-          <div className="slider-card__title-wrap">
-            <div className='slider-card__title slider-card-title'>
-              <h4 className='slider-card-title__text'>{name}</h4>
-              <div className='slider-card-title__metadata slider-card-metadata'>
-                <div className="slider-card-metadata__year">{date}</div>
-                <div className="slider-card-metadata__rating metadata-rating">
+          <div className="card__title-wrap">
+            <div className='card__title card-title'>
+              <h4 className='card-title__text'>{name}</h4>
+              <div className='card-title__metadata card-metadata'>
+                <div className="card-metadata__year">{date}</div>
+                <div className="card-metadata__rating metadata-rating">
                   <div className="metadata-rating__star">
                     <Star></Star>
                   </div>
@@ -46,7 +46,7 @@ function Card({ name, date, rating, poster_path }) {
             </div>
           </div>
           
-          <div className='slider-card__background'>
+          <div className='card__background'>
             <img 
               src={`http://image.tmdb.org/t/p/w500/${poster_path}`} 
               loading='lazy'
@@ -80,8 +80,21 @@ function HomePageSlider({ items, sliderClasses = null }) {
     </Slider>
   );
 }
+function HomePageBlock({ children, title, name = null, actions = null}) {
+  return (
+    <section className={`main-page__block main-page-block${name !== null ? ` ${name}` : ''}`}>
+      <div className={`main-page-block__header${name ? ` ${name}__header` : '' }`}>
+        <h3 className={`main-page-block__title${name ? ` ${name}__title` : '' }`}>
+          {title}
+        </h3>
+        {actions}
+      </div>
+      {children}
+    </section>
+  )
+}
 
-function HomePageBlock({ moviesOrShows, title, moviesFnc, showsFnc, fncArgs = null, blockClasses = nul, headerClasses = null, titleClasses = null, additionalAfterTitle = null }) {
+function MediaSlider({ moviesOrShows, moviesFnc, showsFnc, fncArgs = null, }) {
   const {
     isFetching: isLoading,
     error: blockError,
@@ -92,27 +105,19 @@ function HomePageBlock({ moviesOrShows, title, moviesFnc, showsFnc, fncArgs = nu
     fncArgs,
   );
 
-  let blockItem;
   let blockItems = blockData?.results;
 
-  if (isLoading) blockItem = <p>...Loading</p>;
-  if (!isLoading && blockItems?.length > 0 && !blockError) {
-    blockItem = <HomePageSlider items={moviesOrShows === 'movies' ? blockItems.map(normalizeMovie) : blockItems.map(normalizeShow)} sliderClasses={'horizontal-slider main-page-block__slider'} />;
-  }
-  if (blockError) {
-    blockItem = <p>Error</p>;
+  if (isLoading) return <p>...Loading</p>;
+  if (blockError || !blockItems?.length) {
+    return <p>Error</p>;
   }
 
+  const normalizeItems = moviesOrShows === 'movies' ? normalizeMovie : normalizeShow;
   return (
-    <section className={`main-page__block main-page-block${blockClasses !== null ? ` ${blockClasses}` : ''}`}>
-      <div className={`main-page-block__header${headerClasses ? ` ${headerClasses}` : '' }`}>
-        <h3 className={`main-page-block__title${titleClasses ? ` ${titleClasses}` : '' }`}>
-          {title}
-        </h3>
-        {additionalAfterTitle}
-      </div>
-      { blockItem }
-    </section>
+    <HomePageSlider 
+      items={blockItems.map(normalizeItems)} 
+      sliderClasses={'horizontal-slider main-page-block__slider'}   
+    />
   );
 }
 
@@ -127,22 +132,23 @@ function Trending({ moviesOrShows }) {
   
   return (
     <HomePageBlock
-      moviesOrShows={moviesOrShows}
       title={title}
-      moviesFnc={getTrendingMovies}
-      showsFnc={getTrendingShows}
-      fncArgs={[trendingTimeWindow]}
-      blockClasses={'trending'}
-      headerClasses={'trending-header'}
-      titleClasses={'trending-header__title'}
-      additionalAfterTitle={(
+      name={'trending'}
+      actions={(
         <div className='trending-header__switcher trending-switcher'>
           <button className='trending-switcher__button' value={'day'} onClick={(e) => handleSetTrendingWindow(e.target.value)}>Today</button>
 
           <button className='trending-switcher__button' value={'week'} onClick={(e) => handleSetTrendingWindow(e.target.value)}>This Week</button>
         </div>
       )}
-    ></HomePageBlock>
+    >
+      <MediaSlider
+        moviesOrShows={moviesOrShows}
+        moviesFnc={getTrendingMovies}
+        showsFnc={getTrendingShows}
+        fncArgs={[trendingTimeWindow]}
+      />
+    </HomePageBlock>
   );
 }
 
@@ -151,8 +157,6 @@ export default function Home({}) {
 
   return (
     <main className='main main-page'>
-      <h3>Hello, It's main page</h3>
-     
       <Trending moviesOrShows={moviesOrShows} />
     </main>
   );
