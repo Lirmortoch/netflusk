@@ -93,9 +93,12 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 2px;
 
   transition: all 0.3s ease 0s;
+
+  font-family: Roboto Normal;
 }
 .header__logo span {
   transition: all 0.3s ease 0s;
+  font-family: inherit;
 }
 .header__logo:hover > h1 > span:first-of-type {
   margin-right: 10px;
@@ -439,15 +442,41 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
 }
 
+.main-page-block__title {
+  font-family: Montserrat Normal;
+  margin-bottom: 10px;
+
+  font-size: 1.125em;
+
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 5px;
+  align-items: center;
+}
+.main-page-block__title::before {
+  content: '';
+  display: block;
+
+  height: 1.5em;
+  width: 8px;
+
+  border-radius: 10px;
+  background-color: var(--accent-color);
+}
+.main-page-block__title * {
+  font-family: inherit;
+  display: block;
+}
+
 .trending {
   
 }
 
-.slider {
+.slider > .slider__wrap {
   display: flex;
   width: 100%;
 }
-.horizontal-slider {
+.horizontal-slider > .slider__wrap {
   flex-flow: row nowrap;
   overflow-x: scroll;
   scroll-behavior: smooth;

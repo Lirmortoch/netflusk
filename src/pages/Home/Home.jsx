@@ -62,9 +62,11 @@ function Card({ name, date, rating, poster_path }) {
 }
 function Slider({ children, classes = null }) {
   return (
-    <ul className={`slider${classes !== null ? ` ${classes}` : ''}`}>
-      { children }
-    </ul>
+    <div className={`slider${classes !== null ? ` ${classes}` : ''}`}>
+      <ul className='slider__wrap'>
+        { children }
+      </ul>
+    </div>
   );
 }
 
@@ -85,7 +87,7 @@ function HomePageBlock({ children, title, name = null, actions = null}) {
     <section className={`main-page__block main-page-block${name !== null ? ` ${name}` : ''}`}>
       <div className={`main-page-block__header${name ? ` ${name}__header` : '' }`}>
         <h3 className={`main-page-block__title${name ? ` ${name}__title` : '' }`}>
-          {title}
+          <span>{title}</span>
         </h3>
         {actions}
       </div>
