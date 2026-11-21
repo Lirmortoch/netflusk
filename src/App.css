@@ -520,16 +520,16 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
 
   background-color: rgba(0, 0, 0, 0.425);
-  border-radius: 10px;
+  opacity: 0.75;
 }
 .slider__scroll-btn {
-  height: 100%;
+  height: 30px;
   width: 30px;
 
   color: red;
 }
 .left-btn-wrap {
-  left: calc(0px + var(--card-border-width));
+  left: 0;
 }
 .right-btn-wrap {
   right: calc(0px - var(--card-border-width));
