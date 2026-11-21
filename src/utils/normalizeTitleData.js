@@ -1,5 +1,9 @@
 const toYear = date => date ? new Date(date).getFullYear() : null;
-const toRating = rating => rating ? Number.parseFloat(rating).toFixed(1) : null;
+const toRating = rating => {
+  if (isNaN(rating)) return null;
+
+  return Number.parseFloat(rating).toFixed(1);
+}
 
 export const normalizeMovie = movie => ({
   id: movie.id,
