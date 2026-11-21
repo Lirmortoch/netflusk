@@ -519,14 +519,14 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
 
-  background-color: rgba(0, 0, 0, 0.425);
-  opacity: 0.75;
+  background-color: var(--text-color);
+  opacity: 0.25;
 }
 .slider__scroll-btn {
   height: 30px;
   width: 30px;
 
-  color: red;
+  color: var(--bg-color);
 }
 .left-btn-wrap {
   left: 0;
@@ -545,8 +545,6 @@ h1, h2, h3, h4, h5, h6 {
 .card-1 {
   min-width: 200px;
   min-height: 300px;
-
-  box-sizing: content-box;
 
   overflow: hidden;
 
