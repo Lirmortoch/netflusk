@@ -45,7 +45,6 @@ function Card({ name, date, rating, poster_path }) {
     <li className='slider__card card card-1'>
       <Link to={``} className='card__link'>
         <div className='card__wrap'>
-
           <div className="card__title-wrap">
             <div className='card__title card-title'>
               <h4 className='card-title__text'>{name}</h4>
@@ -78,17 +77,24 @@ function Card({ name, date, rating, poster_path }) {
 function Slider({ children, classes = null }) {
   const sliderRef = useRef();
   
-  const scrollValue = 1040;
+  const scrollAmount = (206 * 5) + (10*5/2);
   const scrollOptions = {
     top: 0,
     behavior: 'auto',
   }
 
   function handleScrollToRight() {
-    sliderRef.current.scrollBy({...scrollOptions, left: scrollValue});
+    sliderRef.current.scrollBy({...scrollOptions, left: scrollAmount});
   }
   function handleScrollToLeft() {
-    sliderRef.current.scrollBy({...scrollOptions, left: -scrollValue});
+    sliderRef.current.scrollBy({...scrollOptions, left: -scrollAmount});
+  }
+
+  function handleSetScroll() {
+    setScroll((prevState) => {
+      if (prevState.isScrollStarted) return {...prevState, value: sliderRef.current.scrollLeft}
+      else return {isScrollStarted: true, value: sliderRef.current.scrollLeft}
+    });
   }
 
   return (
@@ -99,7 +105,7 @@ function Slider({ children, classes = null }) {
         </div>
       </button>
 
-      <ul className='slider__wrap' ref={sliderRef}>
+      <ul className='slider__wrap' ref={sliderRef} onScroll={handleSetScroll}>
         { children }
       </ul>
 
