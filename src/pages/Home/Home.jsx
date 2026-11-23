@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 
-import { getTrendingMovies } from '../../services/movieService';
-import { getTrendingShows } from '../../services/showsService';
-
-import { wordToRegularCase } from '../../utils/utils';
+import { getNowPlayingMovies, getPopularMovies, getTopRatedMovies, getTrendingMovies, getUpcomingMovies } from '../../services/movieService';
+import { getOnTheAirTodayShows, getPopularShows, getTopRatedShows, getTrendingShows } from '../../services/showsService';
 
 import HomePageBlock from './HomePageBlock';
 import MediaSlider from './MediaSlider';
@@ -16,7 +14,7 @@ function Trending({ moviesOrShows }) {
     setTrendingTimeWindow(value)
   }
 
-  const title = `${trendingTimeWindow === 'day' ? `Today's` : `This Week's`} Trending ${wordToRegularCase(moviesOrShows)}`;
+  const title = `${trendingTimeWindow === 'day' ? `Today's` : `This Week's`} Trending ${moviesOrShows === 'movies' ? 'Movies' : 'TV Shows'}`;
   
   return (
     <HomePageBlock
@@ -40,12 +38,76 @@ function Trending({ moviesOrShows }) {
   );
 }
 
+function Popular({ moviesOrShows }) {
+  return (
+    <HomePageBlock
+      title={`Popular ${moviesOrShows === 'movies' ? 'Movies' : 'TV Shows'}`}
+      name={'popular'}
+    >
+      <MediaSlider
+        moviesOrShows={moviesOrShows}
+        moviesFnc={getPopularMovies}
+        showsFnc={getPopularShows}
+      />
+    </HomePageBlock>
+  );
+}
+function NowPlaying({ moviesOrShows }) {
+  return (
+    <HomePageBlock
+      title={moviesOrShows === 'movies' ? 'Now Playing Movies' : 'On The Air TV Shows'}
+      name={moviesOrShows === 'movies' ? 'now-playing' : 'on-the-air'}
+    >
+      <MediaSlider
+        moviesOrShows={moviesOrShows}
+        moviesFnc={getNowPlayingMovies}
+        showsFnc={getOnTheAirTodayShows}
+      />
+    </HomePageBlock>
+  );
+}
+
+function UpcomingMovies({}) {
+  return (
+    <HomePageBlock
+      title={'Upcoming Movies'}
+      name={'upcoming'}
+    >
+      <MediaSlider
+        moviesOrShows={'movies'}
+        moviesFnc={getUpcomingMovies}
+      />
+    </HomePageBlock>
+  );
+}
+
+function TopRated({ moviesOrShows }) {
+  return (
+    <HomePageBlock
+      title={`Top Rated ${moviesOrShows === 'movies' ? 'Movies' : 'TV Shows'}`}
+      name={'top-rated'}
+    >
+      <MediaSlider
+        moviesOrShows={moviesOrShows}
+        moviesFnc={getTopRatedMovies}
+        showsFnc={getTopRatedShows}
+      />
+    </HomePageBlock>
+  );
+}
+
 export default function Home({}) {
   const [moviesOrShows, setMovieOrShows] = useState('movies');
 
   return (
     <main className='main main-page'>
       <Trending moviesOrShows={moviesOrShows} />
+      <Popular moviesOrShows={moviesOrShows}/>
+      <NowPlaying moviesOrShows={moviesOrShows}/>
+
+      {moviesOrShows === 'movies' ? <UpcomingMovies /> : null}
+
+      <TopRated moviesOrShows={moviesOrShows}/>
     </main>
   );
 }

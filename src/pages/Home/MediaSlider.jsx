@@ -2,7 +2,7 @@ import { useFetch } from "../../hooks/useFetch";
 import { normalizeMovie, normalizeShow } from "../../utils/normalizeTitleData";
 import HomePageSlider from "./HomePageSlider";
 
-export default function MediaSlider({ moviesOrShows, moviesFnc, showsFnc, fncArgs = null, }) {
+export default function MediaSlider({ moviesOrShows, moviesFnc = undefined, showsFnc = undefined, fncArgs = [], }) {
   const {
     isFetching: isLoading,
     error: blockError,

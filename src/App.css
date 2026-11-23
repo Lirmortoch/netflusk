@@ -438,10 +438,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .main-page__block {
   width: 95%;
-  margin: 0 auto;
+  
+  margin-left: auto;
+  margin-right: auto;
 }
 .main-page-block {
   overflow: hidden;
+}
+.main-page-block:not(:last-of-type) {
+  margin-bottom: 50px;
 }
 
 .main-page-block__title {
@@ -472,6 +477,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .trending {
   
+}
+
+.trending__header {
+
+}
+
+.trending-header__switcher {
+  
+}
+.trending-switcher {
+}
+.trending-switcher__button {
 }
 
 .slider > .slider__wrap {
