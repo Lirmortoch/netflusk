@@ -498,7 +498,7 @@ h1, h2, h3, h4, h5, h6 {
   scroll-padding-inline: 0;
 }
 .horizontal-slider > .slider__wrap > * {
-  scroll-snap-align: start;
+  scroll-snap-align: center;
 }
 
 .horizontal-slider > .slider__wrap::-webkit-scrollbar {
@@ -516,7 +516,7 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-.slider__button-wrap {
+.slider__button {
   position: absolute;
   z-index: 5;
   
@@ -528,19 +528,33 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
 
   background-color: var(--text-color);
-  opacity: 0.5;
+
+  transition: all 0.3s ease 0s;
 }
-.slider__scroll-btn {
+.slider__button.hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+.scroll-btn__icon {
   height: 30px;
   width: 30px;
 
-  color: var(--bg-color);
+  color: var(--text-color);
+
+  opacity: 0.5;
 }
-.left-btn-wrap {
+.left-btn {
   left: 0;
+  background: linear-gradient(to right,
+    color-mix(in srgb, var(--bg-color) 90%, transparent),
+    transparent);
 }
-.right-btn-wrap {
-  right: calc(0px - var(--card-border-width));
+.right-btn {
+  right: 0;
+  background: linear-gradient(to left,
+    color-mix(in srgb, var(--bg-color) 90%, transparent),
+    transparent);
 }
 
 .slider__card {
@@ -562,6 +576,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.3s ease 0s;
 
   box-sizing: content-box;
+  flex: 0 0 auto;
 }
 .card-1:hover {
   border-color: #3c6fea;
@@ -602,6 +617,10 @@ h1, h2, h3, h4, h5, h6 {
 .card-title__text {
   font-size: 0.875em;
   margin-bottom: 4px;
+  
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .card-title__metadata {
@@ -648,6 +667,8 @@ h1, h2, h3, h4, h5, h6 {
 
   object-fit: cover;
   object-position: center;
+
+  aspect-ratio: 2 / 3;
 }
 .card:hover .card__background > img {
   scale: 110% 110%;

@@ -1,0 +1,30 @@
+import { useFetch } from "../../hooks/useFetch";
+import { normalizeMovie, normalizeShow } from "../../utils/normalizeTitleData";
+import HomePageSlider from "./HomePageSlider";
+
+export default function MediaSlider({ moviesOrShows, moviesFnc, showsFnc, fncArgs = null, }) {
+  const {
+    isFetching: isLoading,
+    error: blockError,
+    fetchedData: blockData,
+  } = useFetch(
+    null, 
+    moviesOrShows === 'movies' ? moviesFnc : showsFnc,
+    fncArgs,
+  );
+
+  let blockItems = blockData?.results;
+
+  if (isLoading) return <p>...Loading</p>;
+  if (blockError || !blockItems?.length) {
+    return <p>Error</p>;
+  }
+
+  const normalizeItems = moviesOrShows === 'movies' ? normalizeMovie : normalizeShow;
+  return (
+    <HomePageSlider 
+      items={blockItems.map(normalizeItems)} 
+      sliderClasses={'horizontal-slider main-page-block__slider'}   
+    />
+  );
+}
