@@ -16,8 +16,11 @@ export default function MediaSlider({ moviesOrShows, moviesFnc = undefined, show
   let blockItems = blockData?.results;
 
   if (isLoading) {
-
-    return <p>...Loading</p>;
+    return ( 
+      <div className={`slider horizontal-slider main-page-block__slider page-block__slider loader-slider`}>
+        <ul className="slider__wrap"></ul>
+      </div>
+    );
   }
   if (blockError || !blockItems?.length) {
     return <p>Error</p>;

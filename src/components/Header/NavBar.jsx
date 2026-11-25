@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import Dropdown from "../ui/Dropdown/Dropdown.jsx";
+// import Dropdown from "../ui/Dropdown/Dropdown.jsx";
 
 export default function NavBar() {
   return (
