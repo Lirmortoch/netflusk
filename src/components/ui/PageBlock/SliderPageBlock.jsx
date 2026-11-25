@@ -1,5 +1,5 @@
 import PageBlock from "./PageBlock";
-import MediaSlider from "../PageSlider/MediaSlider";
+import MediaSlider from "../MediaSlider/MediaSlider";
 
 export default function SliderPageBlock({ title, name, actions = null, moviesOrShows, moviesFnc = undefined, showsFnc = undefined, fncArgs = []}) {
   return (
