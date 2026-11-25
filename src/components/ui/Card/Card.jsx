@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 import { Star } from './Icons';
 
-export default function Card({ name, date, rating, poster_path }) {
+export default function Card({ extraClasses = undefined, name, date, rating, poster_path, }) {
   return (
-    <li className='slider__card card card-1'>
+    <li className={`slider__card card${extraClasses !== undefined ? ` ${extraClasses}` : ''}`}>
       <Link to={``} className='card__link'>
         <div className='card__wrap'>
           <div className="card__title-wrap">
@@ -29,6 +29,7 @@ export default function Card({ name, date, rating, poster_path }) {
               decoding='async'
               fetchPriority='low'
               alt={name}
+              onDragStart={(e) => e.preventDefault()}
               />
           </div>
         </div>
