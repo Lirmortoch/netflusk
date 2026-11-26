@@ -12,19 +12,22 @@ export function Trending({ moviesOrShows }) {
     setTrendingTimeWindow(value)
   }
 
-  const title = `${trendingTimeWindow === 'day' ? `Today's` : `This Week's`} Trending ${moviesOrShows === 'movies' ? 'Movies' : 'TV Shows'}`;
+  const title = (
+    <div className='trending-header__switcher trending-switcher'>
+      <button className={`trending-switcher__button${trendingTimeWindow === 'day' ? ' selected' : ''}`} value={'day'} onClick={(e) => handleSetTrendingWindow(e.target.value)}>Today's</button>
+
+      <span className='trending-switcher__text or-text'>or</span>
+
+      <button className={`trending-switcher__button${trendingTimeWindow === 'week' ? ' selected' : ''}`} value={'week'} onClick={(e) => handleSetTrendingWindow(e.target.value)}>This Week's</button>
+
+      <span className='trending-switcher__text'>{`Trending ${moviesOrShows === 'movies' ? 'Movies' : 'TV Shows'}`}</span>
+    </div>
+  );
   
   return (
     <SliderPageBlock 
       title={title}
       name={'trending'}
-      actions={(
-        <div className='trending-header__switcher trending-switcher'>
-          <button className='trending-switcher__button' value={'day'} onClick={(e) => handleSetTrendingWindow(e.target.value)}>Today</button>
-
-          <button className='trending-switcher__button' value={'week'} onClick={(e) => handleSetTrendingWindow(e.target.value)}>This Week</button>
-        </div>
-      )}
       moviesOrShows={moviesOrShows}
       moviesFnc={getTrendingMovies}
       showsFnc={getTrendingShows}

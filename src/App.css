@@ -24,9 +24,11 @@
 :root {
   color-scheme: light dark;
 
-  --text-color: light-dark(#1f1f1f, #f1f1f1);
-  --bg-color: light-dark(#f1f1f1, #1f1f1f);
+  --text-color: light-dark(#131313, #f1f1f1);
+  --bg-color: light-dark(#f1f1f1, #131313);
   --accent-color: light-dark(#e2a432, #3c6fea);
+  --accent-color-2: light-dark(#ebac37, #3f76f8);
+  --accent-color-3: light-dark(#f7b53b, #417aff);
   --logo-color: light-dark(#8e24aa, #c054fc);
 
   --hover-color: light-dark(rgba(141, 141, 141, 0.15), rgba(201, 201, 201, 0.15));
@@ -90,17 +92,22 @@ h1, h2, h3, h4, h5, h6 {
 .header__logo > h1 {
   font-size: 2.25em;
   font-weight: 700;
-  color: var(--logo-color);
-
+  
   letter-spacing: 2px;
 
   transition: all 0.3s ease 0s;
 
   font-family: Roboto Normal;
+
+  background-image: linear-gradient(90deg, var(--accent-color-3), var(--logo-color));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .header__logo span {
   transition: all 0.3s ease 0s;
   font-family: inherit;
+
+  
 }
 .header__logo:hover > h1 > span:first-of-type {
   margin-right: 10px;
@@ -487,8 +494,31 @@ h1, h2, h3, h4, h5, h6 {
   
 }
 .trending-switcher {
+  
+}
+.trending-switcher > * {
+  display: inline-block;
+}
+.trending-switcher > *:not(:last-child) {
+  margin-right: 0.25em;
+}
+.trending-switcher__text.or-text {
+  color: gray;
 }
 .trending-switcher__button {
+  
+}
+
+.trending-switcher__button.selected {
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: -webkit-text-fill-color .5s;
+}
+.trending-switcher__button:first-of-type.selected {
+  background-image: linear-gradient(to right, var(--accent-color), var(--logo-color) 75%);
+}
+.trending-switcher__button:last-of-type.selected {
+  background-image: linear-gradient(to left, var(--accent-color), var(--logo-color) 75%);
 }
 
 .slider > .slider__wrap {
@@ -532,7 +562,7 @@ h1, h2, h3, h4, h5, h6 {
   background-color: gray;
   min-height: 300px;
   border-radius: 10px;
-  animation: slider-loader-animation 1s infinite linear;
+  animation: slider-loader-animation 0.5s infinite linear;
 }
 
 .page-block__slider {
@@ -602,7 +632,7 @@ h1, h2, h3, h4, h5, h6 {
   flex: 0 0 auto;
 }
 .card-1:hover {
-  border-color: #3c6fea;
+  border-color: var(--accent-color);
 }
 
 .card__link {
