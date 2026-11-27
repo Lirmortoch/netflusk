@@ -1,15 +1,14 @@
 import { useFetch } from "../../../hooks/useFetch";
-import { normalizeMovie, normalizeShow } from "../../../utils/normalizeTitleData";
 import PageSlider from "./PageSlider";
 
-export default function MediaSlider({ moviesOrShows, moviesFnc = undefined, showsFnc = undefined, fncArgs = [], }) {
+export default function MediaSlider({ fetchFnc, fncArgs = [], normalizeFnc, sliderClasses = undefined, Card }) {
   const {
     isFetching: isLoading,
     error: blockError,
     fetchedData: blockData,
   } = useFetch(
     null, 
-    moviesOrShows === 'movies' ? moviesFnc : showsFnc,
+    fetchFnc,
     fncArgs,
   );
 
@@ -26,11 +25,11 @@ export default function MediaSlider({ moviesOrShows, moviesFnc = undefined, show
     return <p>Error</p>;
   }
 
-  const normalizeItems = moviesOrShows === 'movies' ? normalizeMovie : normalizeShow;
   return (
     <PageSlider 
-      items={blockItems.map(normalizeItems)} 
-      sliderClasses={'horizontal-slider main-page-block__slider page-block__slider'}   
+      items={blockItems.map(normalizeFnc)} 
+      sliderClasses={`horizontal-slider page-block__slider${sliderClasses !== undefined ? ` ${sliderClasses}` : ""}`}
+      Card={Card}   
     />
   );
 }

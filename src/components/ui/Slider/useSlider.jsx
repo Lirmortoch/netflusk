@@ -3,7 +3,31 @@ import { useState, useRef, useEffect } from "react";
 const useSlider = (children) => {
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
+  const [scrollAmount, setScrollAmount] = useState(0);
   const sliderRef = useRef();
+
+  const scrollOptions = {
+    top: 0,
+    behavior: 'auto',
+  }
+  function handleScrollToRight() {
+    sliderRef.current?.scrollBy({...scrollOptions, left: scrollAmount});
+  }
+  function handleScrollToLeft() {
+    sliderRef.current?.scrollBy({...scrollOptions, left: -scrollAmount});
+  }
+
+  function handleSetScrollAmount() {
+    setScrollAmount(sliderRef.current?.clientWidth  * 0.9);
+  }
+  useEffect(() => {
+    handleSetScrollAmount();
+    window.addEventListener('resize', handleSetScrollAmount);
+
+    return () => {
+      window.removeEventListener('resize', handleSetScrollAmount);
+    }
+  }, []);
 
   useEffect(() => {
     const el = sliderRef.current;
@@ -23,19 +47,6 @@ const useSlider = (children) => {
     if (last !== first) io.observe(last);
     return () => io.disconnect();
   }, [children]); 
-  
-  const scrollAmount = (sliderRef.current?.clientWidth  * 0.9);
-  const scrollOptions = {
-    top: 0,
-    behavior: 'auto',
-  }
-
-  function handleScrollToRight() {
-    sliderRef.current?.scrollBy({...scrollOptions, left: scrollAmount});
-  }
-  function handleScrollToLeft() {
-    sliderRef.current?.scrollBy({...scrollOptions, left: -scrollAmount});
-  }
 
   return {
     atStart, 
@@ -44,7 +55,7 @@ const useSlider = (children) => {
     sliderRef,
 
     handleScrollToRight,
-    handleScrollToLeft
+    handleScrollToLeft,
   }
 }
 

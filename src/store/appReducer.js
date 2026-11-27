@@ -5,7 +5,7 @@ const appSlicer = createSlice({
   initialState: {
     theme: 'light',
     hasAuth: false,
-    moviesOrShows: 'movie',
+    moviesOrShows: 'movies',
   },
   
   reducers: {
@@ -17,10 +17,14 @@ const appSlicer = createSlice({
       const newState =  {...state, hasAuth: action.payload };
       return newState;
     },
+    setMovieOrShow(state, action) {
+      const newState = { ...state, moviesOrShows: action.payload };
+      return newState;
+    }
   }
 });
 
-const { setTheme, setHasAuth } = appSlicer.actions;
+const { setTheme, setHasAuth, setMovieOrShow } = appSlicer.actions;
 
 const handleSetTheme = (theme) => {
   return (dispatch) => {
@@ -33,7 +37,12 @@ const handleSetHasAuth = (auth) => {
     dispatch(setHasAuth(auth));
   }
 }
+const handleSetMovieOrShow = (movieOrShow) => {
+  return (dispatch) => {
+    dispatch(setMovieOrShow(movieOrShow))
+  }
+}
 
-export { handleSetTheme, handleSetHasAuth }
+export { handleSetTheme, handleSetHasAuth, handleSetMovieOrShow }
 
 export default appSlicer.reducer;

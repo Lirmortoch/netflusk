@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 import { Star } from './Icons';
 
-export default function Card({ extraClasses = undefined, name, date, rating, poster_path, }) {
+export default function MovieShowCard({ extraClasses = undefined, name, date, rating, poster_path, }) {
   return (
-    <li className={`slider__card card${extraClasses !== undefined ? ` ${extraClasses}` : ''}`}>
+    <li className={`movie-show-card card${extraClasses !== undefined ? ` ${extraClasses}` : ''}`}>
       <Link to={``} className='card__link'>
         <div className='card__wrap'>
           <div className="card__title-wrap">
@@ -22,7 +22,7 @@ export default function Card({ extraClasses = undefined, name, date, rating, pos
             </div>
           </div>
           
-          <div className='card__background'>
+          <div className='card__image'>
             <img 
               src={`http://image.tmdb.org/t/p/w500/${poster_path}`} 
               loading='lazy'

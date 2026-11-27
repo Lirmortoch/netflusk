@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { getNowPlayingMovies, getPopularMovies, getTopRatedMovies, getTrendingMovies, getUpcomingMovies } from '../../services/movieService';
 import { getOnTheAirTodayShows, getPopularShows, getTopRatedShows, getTrendingShows } from '../../services/showsService';
 
-import SliderPageBlock from '../../components/ui/PageBlock/SliderPageBlock';
+import HomePageBlock from './HomePageBlock';
 
 export function Trending({ moviesOrShows }) {
   const [trendingTimeWindow, setTrendingTimeWindow] = useState('day');
@@ -25,7 +25,7 @@ export function Trending({ moviesOrShows }) {
   );
   
   return (
-    <SliderPageBlock 
+    <HomePageBlock 
       title={title}
       name={'trending'}
       moviesOrShows={moviesOrShows}
@@ -38,7 +38,7 @@ export function Trending({ moviesOrShows }) {
 
 export function Popular({ moviesOrShows }) {
   return (
-    <SliderPageBlock
+    <HomePageBlock
       title={`Popular ${moviesOrShows === 'movies' ? 'Movies' : 'TV Shows'}`}
       name={'popular'}
       moviesOrShows={moviesOrShows}
@@ -50,7 +50,7 @@ export function Popular({ moviesOrShows }) {
 }
 export function NowPlaying({ moviesOrShows }) {
   return (
-    <SliderPageBlock
+    <HomePageBlock
       title={moviesOrShows === 'movies' ? 'Now Playing Movies' : 'On The Air TV Shows'}
       name={moviesOrShows === 'movies' ? 'now-playing main-page__block' : 'on-the-air main-page__block'}
       moviesOrShows={moviesOrShows}
@@ -62,7 +62,7 @@ export function NowPlaying({ moviesOrShows }) {
 
 export function UpcomingMovies({}) {
   return (
-    <SliderPageBlock
+    <HomePageBlock
       title={'Upcoming Movies'}
       name={'upcoming main-page__block'}
       moviesOrShows={'movies'}
@@ -73,7 +73,7 @@ export function UpcomingMovies({}) {
 
 export function TopRated({ moviesOrShows }) {
   return (
-    <SliderPageBlock
+    <HomePageBlock
       title={`Top Rated ${moviesOrShows === 'movies' ? 'Movies' : 'TV Shows'}`}
       name={'top-rated main-page__block'}
       moviesOrShows={moviesOrShows}

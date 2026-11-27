@@ -1,18 +1,18 @@
 import PageBlock from "./PageBlock";
 import MediaSlider from "../MediaSlider/MediaSlider";
 
-export default function SliderPageBlock({ title, name, actions = null, moviesOrShows, moviesFnc = undefined, showsFnc = undefined, fncArgs = []}) {
+export default function SliderPageBlock({ title, name, actions = null, fetchFnc, normalizeFnc, fncArgs = [], sliderClasses = undefined }) {
   return (
     <PageBlock
       title={title}
-      name={`${name} main-page__block`}
+      name={`${name}`}
       actions={actions}
     >
-      <MediaSlider
-        moviesOrShows={moviesOrShows}
-        moviesFnc={moviesFnc}
-        showsFnc={showsFnc}
+      <MediaSlider 
+        fetchFnc={fetchFnc}   
         fncArgs={fncArgs}
+        normalizeFnc={normalizeFnc}
+        sliderClasses={sliderClasses}
       />
     </PageBlock>
   );

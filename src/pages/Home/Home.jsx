@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
 import { Trending, Popular, NowPlaying, UpcomingMovies, TopRated } from './HomePageBlocks';
+import { useSelector } from 'react-redux';
 
 
 export default function Home({}) {
-  const [moviesOrShows, setMovieOrShows] = useState('movies');
+  const moviesOrShows = useSelector(({ appSettings }) => appSettings.moviesOrShows);
 
   return (
     <main className='main main-page'>
