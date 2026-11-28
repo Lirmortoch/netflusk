@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { Trending, Popular, NowPlaying, UpcomingMovies, TopRated } from './HomePageBlocks';
 import { useSelector } from 'react-redux';
 

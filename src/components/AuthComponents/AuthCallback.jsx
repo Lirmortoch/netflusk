@@ -7,6 +7,7 @@ import { handleSetHasAuth } from '../../store/appReducer';
 
 import Modal from '../ui/Modal/Modal';
 import Loading from '../ui/Loading/Loading';
+import Loader1 from '../ui/Loaders/Loader1';
 
 export default function AuthCallback({}) {
   const [isOpen, setIsOpen] = useState(true);
@@ -63,7 +64,7 @@ export default function AuthCallback({}) {
   return (
     <Modal open={isOpen} modalClassName='loader-modal' >
       <Loading callback={finishAuth} cleanupFnc={cleanupAuth}>
-        <div className='loader-1'></div>
+        <Loader1 />
       </Loading>
     </Modal>
   );

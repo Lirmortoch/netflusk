@@ -1,4 +1,4 @@
-import ProfileTools from './ProfileTools.jsx';
+import ProfileTools from '../ProfileTools/ProfileTools.jsx';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher.jsx';
 
 export default function Toolbar() {
